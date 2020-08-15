@@ -747,7 +747,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 99.72, 100.08, 409, 278.87 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 99.72, 100.08, 409, 395 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -993,7 +993,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 23, 5, -1.05 }
+#define NOZZLE_TO_PROBE_OFFSET { 38, 19, -0.90 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1129,11 +1129,11 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 250
+#define X_BED_SIZE 240
 #define Y_BED_SIZE 220
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
+#define X_MIN_POS -10
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
@@ -1395,8 +1395,8 @@
 #define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
-  #define Z_SAFE_HOMING_X_POINT (31) //X_CENTER  // X point for Z homing
-  #define Z_SAFE_HOMING_Y_POINT (9) //Y_CENTER  // Y point for Z homing
+  #define Z_SAFE_HOMING_X_POINT (46) //X_CENTER  // X point for Z homing
+  #define Z_SAFE_HOMING_Y_POINT (27) //Y_CENTER  // Y point for Z homing
 #endif
 
 // Homing speeds (mm/m)
