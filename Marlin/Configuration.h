@@ -489,10 +489,10 @@
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-  // IOCHHI C2
-  #define DEFAULT_Kp 31.78
-  #define DEFAULT_Ki 2.71
-  #define DEFAULT_Kd 93.09
+  // C2 E3D Hemera
+  #define DEFAULT_Kp 45.26
+  #define DEFAULT_Ki 5.42
+  #define DEFAULT_Kd 94.55
 
   // MakerGear
   //#define DEFAULT_Kp 7.0
@@ -547,9 +547,9 @@
 
   //IOCHHI C2 Cama 24v
   //from pidautotune
-  #define DEFAULT_bedKp 28.51
-  #define DEFAULT_bedKi 1.48
-  #define DEFAULT_bedKd 365.92
+  #define DEFAULT_bedKp 40.88
+  #define DEFAULT_bedKi 2
+  #define DEFAULT_bedKd 558.20
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
