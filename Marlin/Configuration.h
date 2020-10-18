@@ -495,13 +495,13 @@
   #if ENABLED(PID_PARAMS_PER_HOTEND)
     // Specify between 1 and HOTENDS values per array.
     // If fewer than EXTRUDER values are provided, the last element will be repeated.
-    #define DEFAULT_Kp_LIST {  22.20,  22.20 }
+    #define DEFAULT_Kp_LIST {  24.53,  22.20 }
     #define DEFAULT_Ki_LIST {   1.08,   1.08 }
-    #define DEFAULT_Kd_LIST { 114.00, 114.00 }
+    #define DEFAULT_Kd_LIST { 1.76, 114.00 }
   #else
-    #define DEFAULT_Kp  26.02
-    #define DEFAULT_Ki   1.87
-    #define DEFAULT_Kd 90.59
+    #define DEFAULT_Kp 24.53
+    #define DEFAULT_Ki 1.76
+    #define DEFAULT_Kd 85.53
   #endif
 #endif // PIDTEMP
 
@@ -538,11 +538,12 @@
   //#define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
-  // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
+  //C1
+  // 220V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define DEFAULT_bedKp 32.54
-  #define DEFAULT_bedKi 6.40
-  #define DEFAULT_bedKd 110.31
+  #define DEFAULT_bedKp 32.92
+  #define DEFAULT_bedKi 5.90
+  #define DEFAULT_bedKd 122.47
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
