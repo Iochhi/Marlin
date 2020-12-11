@@ -187,7 +187,7 @@
  */
 #if ENABLED(THERMAL_PROTECTION_HOTENDS)
   #define THERMAL_PROTECTION_PERIOD 40        // Seconds
-  #define THERMAL_PROTECTION_HYSTERESIS 4     // Degrees Celsius
+  #define THERMAL_PROTECTION_HYSTERESIS 8     // Degrees Celsius
 
   //#define ADAPTIVE_FAN_SLOWING              // Slow part cooling fan if temperature drops
   #if BOTH(ADAPTIVE_FAN_SLOWING, PIDTEMP)
@@ -215,13 +215,13 @@
  */
 #if ENABLED(THERMAL_PROTECTION_BED)
   #define THERMAL_PROTECTION_BED_PERIOD        40 // Seconds
-  #define THERMAL_PROTECTION_BED_HYSTERESIS     4 // Degrees Celsius
+  #define THERMAL_PROTECTION_BED_HYSTERESIS     8 // Degrees Celsius
 
   /**
    * As described above, except for the bed (M140/M190/M303).
    */
   #define WATCH_BED_TEMP_PERIOD                60 // Seconds
-  #define WATCH_BED_TEMP_INCREASE               2 // Degrees Celsius
+  #define WATCH_BED_TEMP_INCREASE               8 // Degrees Celsius
 #endif
 
 /**
@@ -1254,7 +1254,7 @@
   //#define LONG_FILENAME_HOST_SUPPORT
 
   // Enable this option to scroll long filenames in the SD card menu
-  //#define SCROLL_LONG_FILENAMES
+  #define SCROLL_LONG_FILENAMES
 
   // Leave the heaters on after Stop Print (not recommended!)
   //#define SD_ABORT_NO_COOLDOWN
@@ -1650,10 +1650,10 @@
  *
  * See https://marlinfw.org/docs/features/lin_advance.html for full instructions.
  */
-//#define LIN_ADVANCE
+#define LIN_ADVANCE
 #if ENABLED(LIN_ADVANCE)
   //#define EXTRA_LIN_ADVANCE_K // Enable for second linear advance constants
-  #define LIN_ADVANCE_K 0.22    // Unit: mm compression per 1mm/s extruder speed
+  #define LIN_ADVANCE_K 0    // Unit: mm compression per 1mm/s extruder speed
   //#define LA_DEBUG            // If enabled, this will generate debug information output over USB.
   //#define EXPERIMENTAL_SCURVE // Enable this option to permit S-Curve Acceleration
 #endif
@@ -1900,7 +1900,7 @@
 
 // The ASCII buffer for serial input
 #define MAX_CMD_SIZE 96
-#define BUFSIZE 4
+#define BUFSIZE 16
 
 // Transmission to Host Buffer Size
 // To save 386 bytes of PROGMEM (and TX_BUFFER_SIZE+3 bytes of RAM) set to 0.
@@ -1909,7 +1909,7 @@
 // For debug-echo: 128 bytes for the optimal speed.
 // Other output doesn't need to be that speedy.
 // :[0, 2, 4, 8, 16, 32, 64, 128, 256]
-#define TX_BUFFER_SIZE 0
+#define TX_BUFFER_SIZE 16
 
 // Host Receive Buffer Size
 // Without XON/XOFF flow control (see SERIAL_XON_XOFF below) 32 bytes should be enough.
@@ -2089,7 +2089,7 @@
  */
 #define ADVANCED_PAUSE_FEATURE
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
-  #define PAUSE_PARK_RETRACT_FEEDRATE         30  // (mm/s) Initial retract feedrate.
+  #define PAUSE_PARK_RETRACT_FEEDRATE         40  // (mm/s) Initial retract feedrate.
   #define PAUSE_PARK_RETRACT_LENGTH            2  // (mm) Initial retract.
                                                   // This short retract is done immediately, before parking the nozzle.
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     50  // (mm/s) Unload filament feedrate. This can be pretty fast.
@@ -2265,7 +2265,7 @@
 
   #if AXIS_IS_TMC(X)
     #define X_CURRENT       800        // (mA) RMS current. Multiply by 1.414 for peak current.
-    #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
+    #define X_CURRENT_HOME  400 //X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16    // 0..256
     #define X_RSENSE          0.22
     #define X_CHAIN_POS      -1    // <=0 : Not chained. 1 : MCU MOSI connected. 2 : Next in chain, ...
@@ -2280,8 +2280,8 @@
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT       750
-    #define Y_CURRENT_HOME  Y_CURRENT
+    #define Y_CURRENT       800
+    #define Y_CURRENT_HOME  300 //Y_CURRENT
     #define Y_MICROSTEPS     16
     #define Y_RSENSE          0.22
     #define Y_CHAIN_POS      -1
@@ -2328,7 +2328,7 @@
   #endif
 
   #if AXIS_IS_TMC(E0)
-    #define E0_CURRENT      800
+    #define E0_CURRENT      900
     #define E0_MICROSTEPS    16
     #define E0_RSENSE         0.22
     #define E0_CHAIN_POS     -1
@@ -2456,8 +2456,8 @@
    * When disabled, Marlin will use spreadCycle stepping mode.
    */
   #define STEALTHCHOP_XY
-  //#define STEALTHCHOP_Z
-  //#define STEALTHCHOP_E
+  #define STEALTHCHOP_Z
+  #define STEALTHCHOP_E
 
   /**
    * Optimize spreadCycle chopper parameters by using predefined parameter sets
@@ -2578,7 +2578,7 @@
    * Beta feature!
    * Create a 50/50 square wave step pulse optimal for stepper drivers.
    */
-  //#define SQUARE_WAVE_STEPPING
+  #define SQUARE_WAVE_STEPPING
 
   /**
    * Enable M122 debugging command for TMC stepper drivers.

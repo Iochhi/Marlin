@@ -131,7 +131,7 @@
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "C2 2.0.7.2 281020"
+#define CUSTOM_MACHINE_NAME "C2 2.0.7.2 1112-20"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -499,9 +499,9 @@
     #define DEFAULT_Ki_LIST {   1.08,   1.08 }
     #define DEFAULT_Kd_LIST { 114.00, 114.00 }
   #else
-    #define DEFAULT_Kp  42.93
-    #define DEFAULT_Ki   4.76
-    #define DEFAULT_Kd 96.72
+    #define DEFAULT_Kp  42.05
+    #define DEFAULT_Ki   4.80
+    #define DEFAULT_Kd  92.16
   #endif
 #endif // PIDTEMP
 
@@ -776,7 +776,7 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          1250    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  1250    // E acceleration for retracts
 #define DEFAULT_TRAVEL_ACCELERATION   1250    // X, Y, Z acceleration for travel (non printing) moves
 
@@ -788,7 +788,7 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#define CLASSIC_JERK
+//#define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
   #define DEFAULT_XJERK  8.0
   #define DEFAULT_YJERK  8.0
@@ -802,7 +802,7 @@
   #endif
 #endif
 
-#define DEFAULT_EJERK    4.5  // May be used by Linear Advance
+#define DEFAULT_EJERK    3.0  // May be used by Linear Advance
 
 /**
  * Junction Deviation Factor
@@ -812,7 +812,7 @@
  *   https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
  */
 #if DISABLED(CLASSIC_JERK)
-  #define JUNCTION_DEVIATION_MM 0.0095 // (mm) Distance from real junction edge
+  #define JUNCTION_DEVIATION_MM 0.0256 // (mm) Distance from real junction edge
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
 #endif
@@ -825,7 +825,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-#define S_CURVE_ACCELERATION
+//#define S_CURVE_ACCELERATION
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -1011,7 +1011,7 @@
  * A total of 3 or more adds more slow probes, taking the average.
  */
 #define MULTIPLE_PROBING 2
-//#define EXTRA_PROBING    1
+#define EXTRA_PROBING    1
 
 /**
  * Z probes require clearance when deploying, stowing, and moving between
@@ -1395,7 +1395,7 @@
 
 // Homing speeds (mm/min)
 #define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (16*60)
+#define HOMING_FEEDRATE_Z  (800) //(16*60)
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -1505,7 +1505,7 @@
 // Preheat Constants
 #define PREHEAT_1_LABEL       "PLA"
 #define PREHEAT_1_TEMP_HOTEND 200
-#define PREHEAT_1_TEMP_BED     70
+#define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "PETG"
@@ -1759,7 +1759,7 @@
 // This option overrides the default number of encoder pulses needed to
 // produce one step. Should be increased for high-resolution encoders.
 //
-//#define ENCODER_PULSES_PER_STEP 4
+#define ENCODER_PULSES_PER_STEP 4
 
 //
 // Use this option to override the number of step signals required to
