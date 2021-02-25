@@ -50,6 +50,10 @@
 
   #define MINIPANEL
 
+#elif ENABLED(YHCB2004)
+
+  #define IS_ULTIPANEL 1
+
 #elif ENABLED(CARTESIO_UI)
 
   #define DOGLCD
@@ -1190,4 +1194,11 @@
     #define TOUCH_OFFSET_Y       XPT2046_Y_OFFSET
     #define TOUCH_ORIENTATION    TOUCH_LANDSCAPE
   #endif
+#endif
+
+#if ANY(USE_XMIN_PLUG, USE_YMIN_PLUG, USE_ZMIN_PLUG, USE_XMAX_PLUG, USE_YMAX_PLUG, USE_ZMAX_PLUG)
+  #define HAS_ENDSTOPS 1
+  #define COORDINATE_OKAY(N,L,H) WITHIN(N,L,H)
+#else
+  #define COORDINATE_OKAY(N,L,H) true
 #endif
