@@ -1123,7 +1123,7 @@
 
 // The size of the print bed
 #define X_BED_SIZE 245
-#define Y_BED_SIZE 215
+#define Y_BED_SIZE 210
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
@@ -1282,7 +1282,7 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 5
+  #define GRID_MAX_POINTS_X 4
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
@@ -1390,7 +1390,7 @@
 
 #if ENABLED(Z_SAFE_HOMING)
   #define Z_SAFE_HOMING_X_POINT (46) //X_CENTER  // X point for Z homing
-  #define Z_SAFE_HOMING_Y_POINT (27) //Y_CENTER  // Y point for Z homing
+  #define Z_SAFE_HOMING_Y_POINT (35) //Y_CENTER  // Y point for Z homing
 #endif
 
 // Homing speeds (mm/min)
