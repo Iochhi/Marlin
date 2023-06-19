@@ -32,7 +32,7 @@
 #define BOARD_INFO_NAME       "Einsy Rambo"
 #define DEFAULT_MACHINE_NAME  "Prusa MK3"
 
-//#define MK3_FAN_PINS
+#define MK3_FAN_PINS //REVISAR
 
 //
 // TMC2130 Configuration_adv defaults for EinsyRambo
@@ -138,7 +138,7 @@
 
 #ifndef FAN1_PIN
   #ifdef MK3_FAN_PINS
-    #define FAN1_PIN                          -1
+    #define FAN1_PIN                           8 //-1
   #else
     #define FAN1_PIN                           6
   #endif
