@@ -2963,8 +2963,8 @@
 //
 //#define FYSETC_MINI_12864_X_X    // Type C/D/E/F. No tunable RGB Backlight by default
 //#define FYSETC_MINI_12864_1_2    // Type C/D/E/F. Simple RGB Backlight (always on)
-//#define FYSETC_MINI_12864_2_0    // Type A/B. Discreet RGB Backlight
-#define FYSETC_MINI_12864_2_1    // Type A/B. NeoPixel RGB Backlight
+#define FYSETC_MINI_12864_2_0    // Type A/B. Discreet RGB Backlight
+//#define FYSETC_MINI_12864_2_1    // Type A/B. NeoPixel RGB Backlight
 //#define FYSETC_GENERIC_12864_1_1 // Larger display with basic ON/OFF backlight.
 
 //
@@ -3438,7 +3438,7 @@
  */
 
 // LED Type. Enable only one of the following two options:
-//#define RGB_LED
+#define RGB_LED
 //#define RGBW_LED
 
 #if ANY(RGB_LED, RGBW_LED)
@@ -3456,14 +3456,14 @@
 #endif
 
 // Support for Adafruit NeoPixel LED driver
-#define NEOPIXEL_LED
+//#define NEOPIXEL_LED
 #if ENABLED(NEOPIXEL_LED)
   #define NEOPIXEL_TYPE          NEO_GRBW // NEO_GRBW, NEO_RGBW, NEO_GRB, NEO_RBG, etc.
                                           // See https://github.com/adafruit/Adafruit_NeoPixel/blob/master/Adafruit_NeoPixel.h
   //#define NEOPIXEL_PIN                4 // LED driving pin
   //#define NEOPIXEL2_TYPE  NEOPIXEL_TYPE
   //#define NEOPIXEL2_PIN               5
-  //#define NEOPIXEL_PIXELS              30 // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
+  #define NEOPIXEL_PIXELS              30 // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
   #define NEOPIXEL_IS_SEQUENTIAL          // Sequential display for temperature change - LED by LED. Disable to change all LEDs at once.
   //#define NEOPIXEL_BRIGHTNESS         127 // Initial brightness (0-255)
   #define NEOPIXEL_STARTUP_TEST         // Cycle through colors at startup
