@@ -116,7 +116,7 @@
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "C2 bgf-2.1.x 0407-23 BTT-M3V3"
+#define CUSTOM_MACHINE_NAME "C2 bgf-2.1.x 1107-23 BTT-M3V3"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
