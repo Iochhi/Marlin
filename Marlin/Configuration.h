@@ -116,7 +116,7 @@
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "C2 bgf-2.1.x 1107-23 BTT-M3V3"
+#define CUSTOM_MACHINE_NAME "C2 bgf-2.1.x 1207-23 BTT-M3V3"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -1293,7 +1293,7 @@
   #endif
 #endif
 
-#define DEFAULT_EJERK    5.0  // May be used by Linear Advance
+#define DEFAULT_EJERK    3.0  // May be used by Linear Advance
 
 /**
  * Junction Deviation Factor
@@ -1303,7 +1303,7 @@
  *   https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
  */
 #if DISABLED(CLASSIC_JERK)
-  #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
+  #define JUNCTION_DEVIATION_MM 0.0256 // (mm) Distance from real junction edge
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
 #endif
@@ -1560,7 +1560,7 @@
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 10
+#define PROBING_MARGIN 0
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (133*60)
@@ -1711,7 +1711,7 @@
 
 // @section extruder
 
-//#define DISABLE_E               // Disable the extruder when not stepping
+#define DISABLE_E               // Disable the extruder when not stepping
 #define DISABLE_OTHER_EXTRUDERS   // Keep only the active extruder enabled
 
 // @section motion
@@ -1754,10 +1754,7 @@
 //#define Z_CLEARANCE_FOR_HOMING  4   // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                       // You'll need this much clearance above Z_MAX_POS to avoid grinding.
 
-//#define Z_AFTER_HOMING         10   // (mm) Height to move to after homing (if Z was homed)
-//#define XY_AFTER_HOMING { 10, 10 }  // (mm) Move to an XY position after homing (and raising Z)
-
-//#define EVENT_GCODE_AFTER_HOMING "M300 P440 S200"  // Commands to run after G28 (and move to XY_AFTER_HOMING)
+#define Z_AFTER_HOMING         10 // (mm) Height to move to after homing (if Z was homed)
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
@@ -2086,7 +2083,7 @@
 #if ANY(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 3
+  #define GRID_MAX_POINTS_X 4
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
@@ -2371,7 +2368,7 @@
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "PETG"
-#define PREHEAT_2_TEMP_HOTEND 240
+#define PREHEAT_2_TEMP_HOTEND 220
 #define PREHEAT_2_TEMP_BED    70
 #define PREHEAT_2_TEMP_CHAMBER 35
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
@@ -2608,7 +2605,7 @@
  *
  * :[0:'Classic', 1:'Průša']
  */
-#define LCD_INFO_SCREEN_STYLE 0
+#define LCD_INFO_SCREEN_STYLE 1
 
 /**
  * SD CARD

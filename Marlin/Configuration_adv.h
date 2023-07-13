@@ -689,7 +689,7 @@
 #define E5_AUTO_FAN_PIN -1
 #define E6_AUTO_FAN_PIN -1
 #define E7_AUTO_FAN_PIN -1
-#define CHAMBER_AUTO_FAN_PIN 8 //-1
+#define CHAMBER_AUTO_FAN_PIN -1
 #define COOLER_AUTO_FAN_PIN -1
 
 #define EXTRUDER_AUTO_FAN_TEMPERATURE 50
@@ -925,7 +925,7 @@
 
 //#define SENSORLESS_BACKOFF_MM  { 2, 2, 0 }  // (linear=mm, rotational=°) Backoff from endstops before sensorless homing
 
-#define HOMING_BUMP_MM      { 0, 0, 0 }       // (linear=mm, rotational=°) Backoff from endstops after first bump
+#define HOMING_BUMP_MM      { 0, 0, 2 }       // (linear=mm, rotational=°) Backoff from endstops after first bump
 #define HOMING_BUMP_DIVISOR { 2, 2, 4 }       // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 
 //#define HOMING_BACKOFF_POST_MM { 2, 2, 2 }  // (linear=mm, rotational=°) Backoff from endstops after homing
@@ -1193,7 +1193,7 @@
   #endif
   //#define SHAPING_MIN_FREQ  20        // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
   //#define SHAPING_MAX_STEPRATE 10000  // By default the maximum total step rate of the shaped axes. Override to affect SRAM usage.
-  //#define SHAPING_MENU                // Add a menu to the LCD to set shaping parameters.
+  #define SHAPING_MENU                // Add a menu to the LCD to set shaping parameters.
 #endif
 
 // @section motion
@@ -2850,7 +2850,7 @@
   #define PAUSE_PARK_RETRACT_FEEDRATE         60  // (mm/s) Initial retract feedrate.
   #define PAUSE_PARK_RETRACT_LENGTH            2  // (mm) Initial retract.
                                                   // This short retract is done immediately, before parking the nozzle.
-  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     60  // (mm/s) Unload filament feedrate. This can be pretty fast.
+  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     50  // (mm/s) Unload filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_UNLOAD_ACCEL        10  // (mm/s^2) Lower acceleration may allow a faster feedrate.
   #define FILAMENT_CHANGE_UNLOAD_LENGTH      100  // (mm) The length of filament for a complete unload.
                                                   //   For Bowden, the full length of the tube and nozzle.
@@ -2877,7 +2877,7 @@
   #define FILAMENT_UNLOAD_PURGE_RETRACT        5  // (mm) Unload initial retract length.
   #define FILAMENT_UNLOAD_PURGE_DELAY       5000  // (ms) Delay for the filament to cool after retract.
   #define FILAMENT_UNLOAD_PURGE_LENGTH         8  // (mm) An unretract is done, then this length is purged.
-  #define FILAMENT_UNLOAD_PURGE_FEEDRATE      25  // (mm/s) feedrate to purge before unload
+  #define FILAMENT_UNLOAD_PURGE_FEEDRATE      20  // (mm/s) feedrate to purge before unload
 
   #define PAUSE_PARK_NOZZLE_TIMEOUT           45  // (seconds) Time limit before the nozzle is turned off for safety.
   #define FILAMENT_CHANGE_ALERT_BEEPS          5  // Number of alert beeps to play when a response is needed.
