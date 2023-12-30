@@ -1,9 +1,7 @@
 /**
  * Marlin 3D Printer Firmware
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
- *
- * Based on Sprinter and grbl.
- * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2016 Bob Cousins bobcousins42@googlemail.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -171,7 +169,7 @@ void _delay_ms(const int ms);
 // MarlinHAL Class
 // ------------------------
 
-#define HAL_ADC_VREF_MV   3300
+#define HAL_ADC_VREF         3.3
 #define HAL_ADC_RESOLUTION  10
 
 class MarlinHAL {
