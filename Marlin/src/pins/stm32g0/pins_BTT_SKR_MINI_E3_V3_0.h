@@ -56,7 +56,7 @@
 //
 #define X_STOP_PIN                          PC0   // X-STOP
 #define Y_STOP_PIN                          PC1   // Y-STOP
-#define Z_STOP_PIN                          PA1 //PC2   // Z-STOP
+#define Z_STOP_PIN                          PA1 //PC2   // Z-STOP Cambiar para que funcione PINDA
 
 //
 // Z Probe must be this pin
