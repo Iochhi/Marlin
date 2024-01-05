@@ -48,6 +48,19 @@ template <class L, class R> struct IF<true, L, R> { typedef L type; };
 #define MAIN_AXIS_NAMES       NUM_AXIS_LIST(X, Y, Z, I, J, K, U, V, W)
 #define STR_AXES_MAIN         NUM_AXIS_GANG("X", "Y", "Z", STR_I, STR_J, STR_K, STR_U, STR_V, STR_W)
 
+#define LOGICAL_AXIS_GANG(E,V...)  NUM_AXIS_GANG(V) GANG_ITEM_E(E)
+#define LOGICAL_AXIS_CODE(E,V...)  NUM_AXIS_CODE(V) CODE_ITEM_E(E)
+#define LOGICAL_AXIS_LIST(E,V...)  NUM_AXIS_LIST(V) LIST_ITEM_E(E)
+#define LOGICAL_AXIS_LIST_1(V)     NUM_AXIS_LIST_1(V) LIST_ITEM_E(V)
+#define LOGICAL_AXIS_ARRAY(E,V...) { LOGICAL_AXIS_LIST(E,V) }
+#define LOGICAL_AXIS_ARRAY_1(V)    { LOGICAL_AXIS_LIST_1(V) }
+#define LOGICAL_AXIS_ARGS(T)       LOGICAL_AXIS_LIST(T e, T x, T y, T z, T i, T j, T k, T u, T v, T w)
+#define LOGICAL_AXIS_ELEM(O)       LOGICAL_AXIS_LIST(O.e, O.x, O.y, O.z, O.i, O.j, O.k, O.u, O.v, O.w)
+#define LOGICAL_AXIS_DECL(T,V)     LOGICAL_AXIS_LIST(T e=V, T x=V, T y=V, T z=V, T i=V, T j=V, T k=V, T u=V, T v=V, T w=V)
+#define LOGICAL_AXIS_NAMES         LOGICAL_AXIS_LIST(E, X, Y, Z, I, J, K, U, V, W)
+#define LOGICAL_AXIS_MAP(F)        MAP(F, LOGICAL_AXIS_NAMES)
+#define STR_AXES_LOGICAL           LOGICAL_AXIS_GANG("E", "X", "Y", "Z", STR_I, STR_J, STR_K, STR_U, STR_V, STR_W)
+
 #if NUM_AXES
   #define NUM_AXES_SEP ,
   #define MAIN_AXIS_MAP(F)    MAP(F, MAIN_AXIS_NAMES)
@@ -67,18 +80,18 @@ template <class L, class R> struct IF<true, L, R> { typedef L type; };
 #define NUM_AXIS_ELEM_(T)       NUM_AXIS_ELEM(T) NUM_AXES_SEP
 #define MAIN_AXIS_NAMES_        MAIN_AXIS_NAMES NUM_AXES_SEP
 
-#define LOGICAL_AXIS_GANG(E,V...)  NUM_AXIS_GANG(V) GANG_ITEM_E(E)
-#define LOGICAL_AXIS_CODE(E,V...)  NUM_AXIS_CODE(V) CODE_ITEM_E(E)
-#define LOGICAL_AXIS_LIST(E,V...)  NUM_AXIS_LIST(V) LIST_ITEM_E(E)
-#define LOGICAL_AXIS_LIST_1(V)     NUM_AXIS_LIST_1(V) LIST_ITEM_E(V)
-#define LOGICAL_AXIS_ARRAY(E,V...) { LOGICAL_AXIS_LIST(E,V) }
-#define LOGICAL_AXIS_ARRAY_1(V)    { LOGICAL_AXIS_LIST_1(V) }
-#define LOGICAL_AXIS_ARGS(T)       LOGICAL_AXIS_LIST(T e, T x, T y, T z, T i, T j, T k, T u, T v, T w)
-#define LOGICAL_AXIS_ELEM(O)       LOGICAL_AXIS_LIST(O.e, O.x, O.y, O.z, O.i, O.j, O.k, O.u, O.v, O.w)
-#define LOGICAL_AXIS_DECL(T,V)     LOGICAL_AXIS_LIST(T e=V, T x=V, T y=V, T z=V, T i=V, T j=V, T k=V, T u=V, T v=V, T w=V)
-#define LOGICAL_AXIS_NAMES         LOGICAL_AXIS_LIST(E, X, Y, Z, I, J, K, U, V, W)
-#define LOGICAL_AXIS_MAP(F)        MAP(F, LOGICAL_AXIS_NAMES)
-#define STR_AXES_LOGICAL           LOGICAL_AXIS_GANG("E", "X", "Y", "Z", STR_I, STR_J, STR_K, STR_U, STR_V, STR_W)
+#if LOGICAL_AXES
+  #define LOGICAL_AXES_SEP ,
+#else
+  #define LOGICAL_AXES_SEP
+#endif
+
+#define LOGICAL_AXIS_GANG_(V...)    LOGICAL_AXIS_GANG(V) LOGICAL_AXES_SEP
+#define LOGICAL_AXIS_LIST_(V...)    LOGICAL_AXIS_LIST(V) LOGICAL_AXES_SEP
+#define LOGICAL_AXIS_LIST_1_(V...)  LOGICAL_AXIS_LIST_1(V) LOGICAL_AXES_SEP
+#define LOGICAL_AXIS_ARGS_(T)       LOGICAL_AXIS_ARGS(T) LOGICAL_AXES_SEP
+#define LOGICAL_AXIS_ELEM_(T)       LOGICAL_AXIS_ELEM(T) LOGICAL_AXES_SEP
+#define LOGICAL_AXIS_NAMES_         LOGICAL_AXIS_NAMES LOGICAL_AXES_SEP
 
 #define SECONDARY_AXIS_GANG(V...) GANG_N(SECONDARY_AXES, V)
 #define SECONDARY_AXIS_CODE(V...) CODE_N(SECONDARY_AXES, V)
@@ -146,7 +159,7 @@ template <class L, class R> struct IF<true, L, R> { typedef L type; };
 // General Flags for some number of states
 template<size_t N>
 struct Flags {
-  typedef value_t(N) flagbits_t;
+  typedef uvalue_t(N) flagbits_t;
   typedef struct { bool b0:1, b1:1, b2:1, b3:1, b4:1, b5:1, b6:1, b7:1; } N8;
   typedef struct { bool b0:1, b1:1, b2:1, b3:1, b4:1, b5:1, b6:1, b7:1, b8:1, b9:1, b10:1, b11:1, b12:1, b13:1, b14:1, b15:1; } N16;
   typedef struct { bool b0:1,  b1:1,  b2:1,  b3:1,  b4:1,  b5:1,  b6:1,  b7:1,  b8:1,  b9:1, b10:1, b11:1, b12:1, b13:1, b14:1, b15:1,
@@ -185,7 +198,7 @@ typedef Flags<8> flags_8_t;
 typedef Flags<16> flags_16_t;
 
 // Flags for some axis states, with per-axis aliases xyzijkuvwe
-typedef struct AxisFlags {
+typedef struct {
   union {
     struct Flags<LOGICAL_AXES> flags;
     struct { bool LOGICAL_AXIS_LIST(e:1, x:1, y:1, z:1, i:1, j:1, k:1, u:1, v:1, w:1); };
@@ -199,7 +212,7 @@ typedef struct AxisFlags {
   FI bool operator[](const int n) const      { return flags[n]; }
   FI int size() const                        { return sizeof(flags); }
   FI operator bool() const                   { return flags; }
-} axis_flags_t;
+} AxisFlags;
 
 //
 // Enumerated axis indices
@@ -285,9 +298,9 @@ typedef IF<TERN0(ABL_USES_GRID, (GRID_MAX_POINTS > 255)), uint16_t, uint8_t>::ty
 #define MMM_TO_MMS(MM_M) feedRate_t(static_cast<float>(MM_M) / 60.0f)
 #define MMS_TO_MMM(MM_S) (static_cast<float>(MM_S) * 60.0f)
 
-// Packaged character for AS_CHAR macro and other usage
+// Packaged character for C macro and other usage
 typedef struct SerialChar { char c; SerialChar(char n) : c(n) { } } serial_char_t;
-#define AS_CHAR(C) serial_char_t(C)
+#define C(c) serial_char_t(c)
 
 // Packaged types: float with precision and/or width; a repeated space/character
 typedef struct WFloat { float value; char width; char prec;
@@ -296,10 +309,10 @@ typedef struct WFloat { float value; char width; char prec;
 typedef struct PFloat { float value; char prec;
                         PFloat(float v, char p) : value(v), prec(p) {}
                       } p_float_t;
-typedef struct RepChr { char asc; uint8_t count;
+typedef struct RepChr { char asc; int8_t count;
                         RepChr(char a, uint8_t c) : asc(a), count(c) {}
                       } repchr_t;
-typedef struct Spaces { uint8_t count;
+typedef struct Spaces { int8_t count;
                         Spaces(uint8_t c) : count(c) {}
                       } spaces_t;
 
