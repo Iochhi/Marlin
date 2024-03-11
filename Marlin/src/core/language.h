@@ -153,7 +153,7 @@
 #define STR_ERR_ARC_ARGS                    "G2/G3 bad parameters"
 #define STR_ERR_PROTECTED_PIN               "Protected Pin"
 #define STR_ERR_M420_FAILED                 "Failed to enable Bed Leveling"
-#define STR_ERR_M428_TOO_FAR                "Too far from reference point"
+#define STR_ERR_M428_TOO_FAR                "Too far from MIN/MAX"
 #define STR_ERR_M303_DISABLED               "PIDTEMP disabled"
 #define STR_M119_REPORT                     "Reporting endstop status"
 #define STR_ON                              "ON"
@@ -174,6 +174,7 @@
 #define STR_SD_VOL_INIT_FAIL                "volume.init failed"
 #define STR_SD_OPENROOT_FAIL                "openRoot failed"
 #define STR_SD_CARD_OK                      "SD card ok"
+#define STR_SD_CARD_RELEASED                "SD card released"
 #define STR_SD_WORKDIR_FAIL                 "workDir open failed"
 #define STR_SD_OPEN_FILE_FAIL               "open failed, File: "
 #define STR_SD_FILE_OPENED                  "File opened: "
@@ -191,6 +192,7 @@
 #define STR_ERR_LONG_EXTRUDE_STOP           " too long extrusion prevented"
 #define STR_ERR_HOTEND_TOO_COLD             "Hotend too cold"
 #define STR_ERR_EEPROM_WRITE                "Error writing to EEPROM!"
+#define STR_ERR_EEPROM_CORRUPT              "EEPROM Corrupt"
 
 #define STR_FILAMENT_CHANGE_HEAT_LCD        "Press button to heat nozzle"
 #define STR_FILAMENT_CHANGE_INSERT_LCD      "Insert filament and press button"
@@ -321,10 +323,12 @@
 //
 // Endstop Names used by Endstops::report_states
 //
-#define STR_X_MIN                           "x_min"
-#define STR_X_MAX                           "x_max"
-#define STR_X2_MIN                          "x2_min"
-#define STR_X2_MAX                          "x2_max"
+#if HAS_X_AXIS
+  #define STR_X_MIN                         "x_min"
+  #define STR_X_MAX                         "x_max"
+  #define STR_X2_MIN                        "x2_min"
+  #define STR_X2_MAX                        "x2_max"
+#endif
 
 #if HAS_Y_AXIS
   #define STR_Y_MIN                         "y_min"
@@ -453,7 +457,55 @@
   #define STR_K   ""
 #endif
 
-#if EITHER(HAS_MARLINUI_HD44780, IS_TFTGLCD_PANEL)
+#if HAS_U_AXIS
+  #if AXIS7_NAME == 'U'
+    #define STR_U "U"
+    #define STR_U_MIN "u_min"
+    #define STR_U_MAX "u_max"
+  #elif AXIS7_NAME == 'V'
+    #define STR_U "V"
+    #define STR_U_MIN "v_min"
+    #define STR_U_MAX "v_max"
+  #elif AXIS7_NAME == 'W'
+    #define STR_U "W"
+    #define STR_U_MIN "w_min"
+    #define STR_U_MAX "w_max"
+  #else
+    #error "AXIS7_NAME can only be one of 'U', 'V', or 'W'."
+  #endif
+#else
+  #define STR_U   ""
+#endif
+
+#if HAS_V_AXIS
+  #if AXIS8_NAME == 'V'
+    #define STR_V "V"
+    #define STR_V_MIN "v_min"
+    #define STR_V_MAX "v_max"
+  #elif AXIS8_NAME == 'W'
+    #define STR_V "W"
+    #define STR_V_MIN "w_min"
+    #define STR_V_MAX "w_max"
+  #else
+    #error "AXIS8_NAME can only be one of 'V', or 'W'."
+  #endif
+#else
+  #define STR_V   ""
+#endif
+
+#if HAS_W_AXIS
+  #if AXIS9_NAME == 'W'
+    #define STR_W "W"
+    #define STR_W_MIN "w_min"
+    #define STR_W_MAX "w_max"
+  #else
+    #error "AXIS9_NAME can only be 'W'."
+  #endif
+#else
+  #define STR_W   ""
+#endif
+
+#if ANY(HAS_MARLINUI_HD44780, IS_TFTGLCD_PANEL)
 
   // Custom characters defined in the first 8 characters of the LCD
   #define LCD_STR_BEDTEMP     "\x00" // Print only as a char. This will have 'unexpected' results when used in a string!

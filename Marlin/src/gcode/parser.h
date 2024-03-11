@@ -22,8 +22,8 @@
 #pragma once
 
 /**
- * parser.h - Parser for a GCode line, providing a parameter interface.
- *           Codes like M149 control the way the GCode parser behaves,
+ * parser.h - Parser for a G-Code line, providing a parameter interface.
+ *           Codes like M149 control the way the G-Code parser behaves,
  *           so settings for these codes are located in this class.
  */
 
@@ -43,7 +43,7 @@
 #endif
 
 /**
- * GCode parser
+ * G-Code parser
  *
  *  - Parse a single G-code line for its letter, code, subcode, and parameters
  *  - FASTER_GCODE_PARSER:
@@ -68,7 +68,7 @@ private:
 
 public:
 
-  // Global states for GCode-level units features
+  // Global states for G-Code-level units features
 
   static bool volumetric_enabled;
 
@@ -233,7 +233,7 @@ public:
     FORCE_INLINE static char* unescape_string(char* &src) { return src; }
   #endif
 
-  // Populate all fields by parsing a single line of GCode
+  // Populate all fields by parsing a single line of G-Code
   // This uses 54 bytes of SRAM to speed up seen/value
   static void parse(char * p);
 
@@ -256,22 +256,20 @@ public:
 
   // Float removes 'E' to prevent scientific notation interpretation
   static float value_float() {
-    if (value_ptr) {
-      char *e = value_ptr;
-      for (;;) {
-        const char c = *e;
-        if (c == '\0' || c == ' ') break;
-        if (c == 'E' || c == 'e') {
-          *e = '\0';
-          const float ret = strtof(value_ptr, nullptr);
-          *e = c;
-          return ret;
-        }
-        ++e;
+    if (!value_ptr) return 0;
+    char *e = value_ptr;
+    for (;;) {
+      const char c = *e;
+      if (c == '\0' || c == ' ') break;
+      if (c == 'E' || c == 'e' || c == 'X' || c == 'x') {
+        *e = '\0';
+        const float ret = strtof(value_ptr, nullptr);
+        *e = c;
+        return ret;
       }
-      return strtof(value_ptr, nullptr);
+      ++e;
     }
-    return 0;
+    return strtof(value_ptr, nullptr);
   }
 
   // Code value as a long or ulong
@@ -289,6 +287,17 @@ public:
 
   // Bool is true with no value or non-zero
   static bool value_bool() { return !has_value() || !!value_byte(); }
+
+  static constexpr bool axis_is_rotational(const AxisEnum axis) {
+    return (false
+      || TERN0(AXIS4_ROTATES, axis == I_AXIS)
+      || TERN0(AXIS5_ROTATES, axis == J_AXIS)
+      || TERN0(AXIS6_ROTATES, axis == K_AXIS)
+      || TERN0(AXIS7_ROTATES, axis == U_AXIS)
+      || TERN0(AXIS8_ROTATES, axis == V_AXIS)
+      || TERN0(AXIS9_ROTATES, axis == W_AXIS)
+    );
+  }
 
   // Units modes: Inches, Fahrenheit, Kelvin
 
@@ -309,13 +318,11 @@ public:
     }
 
     static float axis_unit_factor(const AxisEnum axis) {
-      return (
-        #if HAS_EXTRUDERS
-          axis >= E_AXIS && volumetric_enabled ? volumetric_unit_factor : linear_unit_factor
-        #else
-          linear_unit_factor
-        #endif
-      );
+      if (axis_is_rotational(axis)) return 1.0f;
+      #if HAS_EXTRUDERS
+        if (axis >= E_AXIS && volumetric_enabled) return volumetric_unit_factor;
+      #endif
+      return linear_unit_factor;
     }
 
     static float linear_value_to_mm(const_float_t v)                  { return v * linear_unit_factor; }
@@ -324,12 +331,12 @@ public:
 
   #else
 
-    static float mm_to_linear_unit(const_float_t mm)     { return mm; }
-    static float mm_to_volumetric_unit(const_float_t mm) { return mm; }
+    static constexpr float mm_to_linear_unit(const_float_t mm)     { return mm; }
+    static constexpr float mm_to_volumetric_unit(const_float_t mm) { return mm; }
 
-    static float linear_value_to_mm(const_float_t v)             { return v; }
-    static float axis_value_to_mm(const AxisEnum, const float v) { return v; }
-    static float per_axis_value(const AxisEnum, const float v)   { return v; }
+    static constexpr float linear_value_to_mm(const_float_t v)             { return v; }
+    static constexpr float axis_value_to_mm(const AxisEnum, const float v) { return v; }
+    static constexpr float per_axis_value(const AxisEnum, const float v)   { return v; }
 
   #endif
 
@@ -339,6 +346,13 @@ public:
   #define MM_TO_IN(M)        ((M) / 25.4f)
   #define LINEAR_UNIT(V)     parser.mm_to_linear_unit(V)
   #define VOLUMETRIC_UNIT(V) parser.mm_to_volumetric_unit(V)
+
+  #define I_AXIS_UNIT(V) TERN(AXIS4_ROTATES, (V), LINEAR_UNIT(V))
+  #define J_AXIS_UNIT(V) TERN(AXIS5_ROTATES, (V), LINEAR_UNIT(V))
+  #define K_AXIS_UNIT(V) TERN(AXIS6_ROTATES, (V), LINEAR_UNIT(V))
+  #define U_AXIS_UNIT(V) TERN(AXIS7_ROTATES, (V), LINEAR_UNIT(V))
+  #define V_AXIS_UNIT(V) TERN(AXIS8_ROTATES, (V), LINEAR_UNIT(V))
+  #define W_AXIS_UNIT(V) TERN(AXIS9_ROTATES, (V), LINEAR_UNIT(V))
 
   static float value_linear_units()                      { return linear_value_to_mm(value_float()); }
   static float value_axis_units(const AxisEnum axis)     { return axis_value_to_mm(axis, value_float()); }
@@ -392,7 +406,7 @@ public:
 
   #else // !TEMPERATURE_UNITS_SUPPORT
 
-    static float to_temp_units(int16_t c) { return (float)c; }
+    static constexpr float to_temp_units(int16_t c) { return (float)c; }
 
     static celsius_t value_celsius()      { return value_int(); }
     static celsius_t value_celsius_diff() { return value_int(); }

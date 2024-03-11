@@ -52,6 +52,9 @@
  *    A<pos>    = Override park position A (requires AXIS*_NAME 'A')
  *    B<pos>    = Override park position B (requires AXIS*_NAME 'B')
  *    C<pos>    = Override park position C (requires AXIS*_NAME 'C')
+ *    U<pos>    = Override park position U (requires AXIS*_NAME 'U')
+ *    V<pos>    = Override park position V (requires AXIS*_NAME 'V')
+ *    W<pos>    = Override park position W (requires AXIS*_NAME 'W')
  *    Z<linear> = Override Z raise
  *
  *  With an LCD menu:
@@ -70,7 +73,10 @@ void GcodeSuite::M125() {
     NOOP,
     if (parser.seenval(AXIS4_NAME)) park_point.i = RAW_I_POSITION(parser.linearval(AXIS4_NAME)),
     if (parser.seenval(AXIS5_NAME)) park_point.j = RAW_J_POSITION(parser.linearval(AXIS5_NAME)),
-    if (parser.seenval(AXIS6_NAME)) park_point.k = RAW_K_POSITION(parser.linearval(AXIS6_NAME))
+    if (parser.seenval(AXIS6_NAME)) park_point.k = RAW_K_POSITION(parser.linearval(AXIS6_NAME)),
+    if (parser.seenval(AXIS7_NAME)) park_point.u = RAW_U_POSITION(parser.linearval(AXIS7_NAME)),
+    if (parser.seenval(AXIS8_NAME)) park_point.v = RAW_V_POSITION(parser.linearval(AXIS8_NAME)),
+    if (parser.seenval(AXIS9_NAME)) park_point.w = RAW_W_POSITION(parser.linearval(AXIS9_NAME))
   );
 
   // Lift Z axis
@@ -82,7 +88,7 @@ void GcodeSuite::M125() {
     park_point += hotend_offset[active_extruder];
   #endif
 
-  const bool sd_printing = TERN0(SDSUPPORT, IS_SD_PRINTING());
+  const bool sd_printing = TERN0(HAS_MEDIA, IS_SD_PRINTING());
 
   ui.pause_show_message(PAUSE_MESSAGE_PARKING, PAUSE_MODE_PAUSE_PRINT);
 
@@ -90,7 +96,7 @@ void GcodeSuite::M125() {
   const bool show_lcd = TERN0(HAS_MARLINUI_MENU, parser.boolval('P'));
 
   if (pause_print(retract, park_point, show_lcd, 0)) {
-    if (ENABLED(EXTENSIBLE_UI) || BOTH(EMERGENCY_PARSER, HOST_PROMPT_SUPPORT) || !sd_printing || show_lcd) {
+    if (ENABLED(HAS_DISPLAY) || ALL(EMERGENCY_PARSER, HOST_PROMPT_SUPPORT) || !sd_printing || show_lcd) {
       wait_for_confirmation(false, 0);
       resume_print(0, 0, -retract, 0);
     }
