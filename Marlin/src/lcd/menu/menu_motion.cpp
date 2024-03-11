@@ -118,7 +118,7 @@ void lcd_move_axis(const AxisEnum axis) {
 
 #endif // E_MANUAL
 
-#if EITHER(PROBE_OFFSET_WIZARD, X_AXIS_TWIST_COMPENSATION)
+#if ANY(PROBE_OFFSET_WIZARD, X_AXIS_TWIST_COMPENSATION)
 
   void _goto_manual_move_z(const_float_t scale) {
     ui.manual_move.menu_scale = scale;
@@ -145,6 +145,7 @@ void _goto_manual_move(const_float_t scale) {
 void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int8_t eindex=active_extruder) {
   ui.manual_move.screen_ptr = func;
   START_MENU();
+
   if (LCD_HEIGHT >= 4) {
     if (axis < NUM_AXES)
       STATIC_ITEM_N(axis, MSG_MOVE_N, SS_DEFAULT|SS_INVERT);
@@ -206,7 +207,7 @@ void menu_move() {
   START_MENU();
   BACK_ITEM(MSG_MOTION);
 
-  #if BOTH(HAS_SOFTWARE_ENDSTOPS, SOFT_ENDSTOPS_MENU_ITEM)
+  #if ALL(HAS_SOFTWARE_ENDSTOPS, SOFT_ENDSTOPS_MENU_ITEM)
     EDIT_ITEM(bool, MSG_LCD_SOFT_ENDSTOPS, &soft_endstop._enabled);
   #endif
 
@@ -264,7 +265,7 @@ void menu_move() {
 
     #define SUBMENU_MOVE_E(N) SUBMENU_N(N, MSG_MOVE_EN, []{ _menu_move_distance(E_AXIS, []{ lcd_move_e(N); }, N); });
 
-    #if EITHER(SWITCHING_EXTRUDER, SWITCHING_NOZZLE)
+    #if ANY(SWITCHING_EXTRUDER, SWITCHING_NOZZLE)
 
       // ...and the non-switching
       #if E_MANUAL == 7 || E_MANUAL == 5 || E_MANUAL == 3
@@ -316,7 +317,7 @@ void menu_motion() {
   //
   // ^ Main
   //
-  BACK_ITEM(MSG_MAIN);
+  BACK_ITEM(MSG_MAIN_MENU);
 
   //
   // Move Axis
@@ -346,7 +347,7 @@ void menu_motion() {
   //
   // Auto Z-Align
   //
-  #if EITHER(Z_STEPPER_AUTO_ALIGN, MECHANICAL_GANTRY_CALIBRATION)
+  #if ANY(Z_STEPPER_AUTO_ALIGN, MECHANICAL_GANTRY_CALIBRATION)
     GCODES_ITEM(MSG_AUTO_Z_ALIGN, F("G34"));
   #endif
 
@@ -403,7 +404,7 @@ void menu_motion() {
   #endif
 
   #if ENABLED(LCD_BED_TRAMMING) && DISABLED(LCD_BED_LEVELING)
-    SUBMENU(MSG_BED_TRAMMING, _lcd_level_bed_corners);
+    SUBMENU(MSG_BED_TRAMMING, _lcd_bed_tramming);
   #endif
 
   #if ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST)
