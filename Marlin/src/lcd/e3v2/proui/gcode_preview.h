@@ -19,16 +19,47 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+<<<<<<< HEAD
 #pragma once
 
 /**
+=======
+
+/**
+<<<<<<<< HEAD:Marlin/src/HAL/SAMD21/u8g/LCD_I2C_routines.cpp
+ * SAMD21 HAL developed by Bart Meijer (brupje)
+ * Based on SAMD51 HAL by Giuliano Zaro (AKA GMagician)
+ */
+// adapted from  I2C/master/master.c example
+//   https://www-users.cs.york.ac.uk/~pcc/MCP/HAPR-Course-web/CMSIS/examples/html/master_8c_source.html
+
+#ifdef __SAMD21__
+
+#endif // __SAMD21__
+========
+>>>>>>> bugfix-2.1.x
  * DWIN G-code thumbnail preview
  * Author: Miguel A. Risco-Castillo
  * version: 3.1.2
  * Date: 2022/09/03
  */
 
+<<<<<<< HEAD
 void Preview_DrawFromSD();
 void Preview_Invalidate();
 bool Preview_Valid();
 void Preview_Reset();
+=======
+class Preview {
+public:
+  static void drawFromSD();
+  static void invalidate();
+  static bool valid();
+  static void show();
+private:
+  static bool hasPreview();
+};
+
+extern Preview preview;
+>>>>>>>> bugfix-2.1.x:Marlin/src/lcd/e3v2/proui/gcode_preview.h
+>>>>>>> bugfix-2.1.x

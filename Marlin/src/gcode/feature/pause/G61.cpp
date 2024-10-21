@@ -54,10 +54,15 @@
  *
  *   If no axes are specified then all axes are restored.
  */
+<<<<<<< HEAD
 void GcodeSuite::G61() {
+=======
+void GcodeSuite::G61(int8_t slot/*=-1*/) {
+>>>>>>> bugfix-2.1.x
 
-  const uint8_t slot = parser.byteval('S');
+  if (slot < 0) slot = parser.byteval('S');
 
+<<<<<<< HEAD
   #define SYNC_E(POINT) TERN_(HAS_EXTRUDERS, planner.set_e_position_mm((destination.e = current_position.e = (POINT))))
 
   #if SAVED_POSITIONS < 256
@@ -69,12 +74,24 @@ void GcodeSuite::G61() {
 
   // No saved position? No axes being restored?
   if (!TEST(saved_slots[slot >> 3], slot & 0x07)) return;
+=======
+  #define SYNC_E(E) planner.set_e_position_mm(current_position.e = (E))
+
+  if (SAVED_POSITIONS < 256 && slot >= SAVED_POSITIONS) {
+    SERIAL_ERROR_MSG(STR_INVALID_POS_SLOT STRINGIFY(SAVED_POSITIONS));
+    return;
+  }
+
+  // No saved position? No axes being restored?
+  if (!did_save_position[slot]) return;
+>>>>>>> bugfix-2.1.x
 
   // Apply any given feedrate over 0.0
   REMEMBER(saved, feedrate_mm_s);
   const float fr = parser.linearval('F');
   if (fr > 0.0) feedrate_mm_s = MMM_TO_MMS(fr);
 
+<<<<<<< HEAD
   if (!parser.seen_axis()) {
     DEBUG_ECHOLNPGM("Default position restore");
     do_blocking_move_to(stored_position[slot], feedrate_mm_s);
@@ -101,6 +118,47 @@ void GcodeSuite::G61() {
       }
     #endif
   }
+=======
+  // No XYZ...E parameters, move to stored position
+
+  float epos = stored_position[slot].e;
+  if (!parser.seen_axis()) {
+    DEBUG_ECHOLNPGM(STR_RESTORING_POSITION, slot, " (all axes)");
+    // Move to the saved position, all axes except E
+    do_blocking_move_to(stored_position[slot], feedrate_mm_s);
+    // Just set E to the saved position without moving it
+    TERN_(HAS_EXTRUDERS, SYNC_E(stored_position[slot].e));
+    report_current_position();
+    return;
+  }
+
+  // With XYZ...E return specified axes + optional offset
+
+  DEBUG_ECHOPGM(STR_RESTORING_POSITION " S", slot);
+
+  if (parser.seen(STR_AXES_MAIN)) {
+    destination = current_position;
+    LOOP_NUM_AXES(i) {
+      if (parser.seen(AXIS_CHAR(i))) {
+        destination[i] = stored_position[slot][i] + parser.value_axis_units((AxisEnum)i);
+        DEBUG_ECHO(C(' '), C(AXIS_CHAR(i)), p_float_t(destination[i], 2));
+      }
+    }
+    prepare_line_to_destination();
+  }
+
+  #if HAS_EXTRUDERS
+    if (parser.seen('E')) {
+      epos += parser.value_axis_units(E_AXIS);
+      DEBUG_ECHOPGM(" E", epos);
+      SYNC_E(epos);
+    }
+  #endif
+
+  DEBUG_EOL();
+
+  report_current_position();
+>>>>>>> bugfix-2.1.x
 }
 
 #endif // SAVED_POSITIONS

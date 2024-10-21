@@ -44,6 +44,7 @@ namespace ExtUI {
     KillScreen::show(str);
   }
 
+<<<<<<< HEAD
   void onMediaInserted() {
     #if HAS_MEDIA
       sound.play(media_inserted, PLAY_ASYNCHRONOUS);
@@ -51,6 +52,20 @@ namespace ExtUI {
     #endif
   }
 
+=======
+  void onMediaMounted() {
+    #if HAS_MEDIA
+      sound.play(media_inserted, PLAY_ASYNCHRONOUS);
+      StatusScreen::onMediaMounted();
+    #endif
+  }
+
+  void onMediaError() {
+    sound.play(sad_trombone, PLAY_ASYNCHRONOUS);
+    AlertDialogBox::showError(F("Unable to read media."));
+  }
+
+>>>>>>> bugfix-2.1.x
   void onMediaRemoved() {
     #if HAS_MEDIA
       if (isPrintingFromMedia()) {
@@ -65,21 +80,37 @@ namespace ExtUI {
     #endif
   }
 
+<<<<<<< HEAD
   void onMediaError() {
     sound.play(sad_trombone, PLAY_ASYNCHRONOUS);
     AlertDialogBox::showError(F("Unable to read media."));
   }
+=======
+  void onHeatingError(const heater_id_t header_id) {}
+  void onMinTempError(const heater_id_t header_id) {}
+  void onMaxTempError(const heater_id_t header_id) {}
+>>>>>>> bugfix-2.1.x
 
   void onStatusChanged(const char *lcd_msg) { StatusScreen::setStatusMessage(lcd_msg); }
 
   void onPrintTimerStarted() {
     InterfaceSoundsScreen::playEventSound(InterfaceSoundsScreen::PRINTING_STARTED);
+<<<<<<< HEAD
+=======
+    current_screen.forget();
+    PUSH_SCREEN(StatusScreen);
+>>>>>>> bugfix-2.1.x
   }
   void onPrintTimerStopped() {
     InterfaceSoundsScreen::playEventSound(InterfaceSoundsScreen::PRINTING_FINISHED);
   }
+<<<<<<< HEAD
 
   void onPrintTimerPaused() {}
+=======
+  void onPrintTimerPaused() {}
+
+>>>>>>> bugfix-2.1.x
   void onPrintDone() {}
 
   void onFilamentRunout(const extruder_t extruder) {
@@ -114,6 +145,7 @@ namespace ExtUI {
     if (msg)
       ConfirmUserRequestAlertBox::show(msg);
     else
+<<<<<<< HEAD
       ConfirmUserRequestAlertBox::hide();
   }
 
@@ -125,6 +157,59 @@ namespace ExtUI {
   #if HAS_MESH
     void onMeshUpdate(const int8_t x, const int8_t y, const_float_t val) { BedMeshViewScreen::onMeshUpdate(x, y, val); }
     void onMeshUpdate(const int8_t x, const int8_t y, const ExtUI::probe_state_t state) { BedMeshViewScreen::onMeshUpdate(x, y, state); }
+=======
+      ConfirmUserRequestAlertBox::show("Press Resume to Continue");
+  }
+
+  #if ENABLED(ADVANCED_PAUSE_FEATURE)
+    void filament_load_prompt(const char * const msg) {
+      if (msg)
+        FilamentPromptBox::show();
+      else
+        FilamentPromptBox::hide();
+    }
+  #endif
+
+  // For fancy LCDs include an icon ID, message, and translated button title
+  void onUserConfirmRequired(const int icon, const char * const cstr, FSTR_P const fBtn) {
+    onUserConfirmRequired(cstr);
+    UNUSED(icon); UNUSED(fBtn);
+  }
+  void onUserConfirmRequired(const int icon, FSTR_P const fstr, FSTR_P const fBtn) {
+    onUserConfirmRequired(fstr);
+    UNUSED(icon); UNUSED(fBtn);
+  }
+
+  #if ENABLED(ADVANCED_PAUSE_FEATURE)
+    void onPauseMode(
+      const PauseMessage message,
+      const PauseMode mode/*=PAUSE_MODE_SAME*/,
+      const uint8_t extruder/*=active_extruder*/
+    ) {
+      stdOnPauseMode(message, mode, extruder);
+    }
+  #endif
+
+  #if HAS_LEVELING
+    void onLevelingStart() {}
+    void onLevelingDone() {}
+    #if ENABLED(PREHEAT_BEFORE_LEVELING)
+      celsius_t getLevelingBedTemp() { return LEVELING_BED_TEMP; }
+    #endif
+  #endif
+
+  #if HAS_MESH
+    void onMeshUpdate(const int8_t x, const int8_t y, const_float_t val) {
+      BedMeshViewScreen::onMeshUpdate(x, y, val);
+    }
+    void onMeshUpdate(const int8_t x, const int8_t y, const ExtUI::probe_state_t state) {
+      BedMeshViewScreen::onMeshUpdate(x, y, state);
+    }
+  #endif
+
+  #if ENABLED(PREVENT_COLD_EXTRUSION)
+    void onSetMinExtrusionTemp(const celsius_t) {}
+>>>>>>> bugfix-2.1.x
   #endif
 
   #if ENABLED(POWER_LOSS_RECOVERY)
@@ -140,6 +225,7 @@ namespace ExtUI {
   #endif
 
   #if HAS_PID_HEATING
+<<<<<<< HEAD
     void onPidTuning(const result_t rst) {
       // Called for temperature PID tuning result
       //SERIAL_ECHOLNPGM("OnPidTuning:", rst);
@@ -149,6 +235,19 @@ namespace ExtUI {
           break;
         case PID_BAD_EXTRUDER_NUM:
           StatusScreen::setStatusMessage(GET_TEXT_F(MSG_PID_BAD_EXTRUDER_NUM));
+=======
+    void onPIDTuning(const pidresult_t rst) {
+      // Called for temperature PID tuning result
+      //SERIAL_ECHOLNPGM("OnPIDTuning:", rst);
+      switch (rst) {
+        case PID_STARTED:
+        case PID_BED_STARTED:
+        case PID_CHAMBER_STARTED:
+          StatusScreen::setStatusMessage(GET_TEXT_F(MSG_PID_AUTOTUNE));
+          break;
+        case PID_BAD_HEATER_ID:
+          StatusScreen::setStatusMessage(GET_TEXT_F(MSG_PID_BAD_HEATER_ID));
+>>>>>>> bugfix-2.1.x
           break;
         case PID_TEMP_TOO_HIGH:
           StatusScreen::setStatusMessage(GET_TEXT_F(MSG_PID_TEMP_TOO_HIGH));
@@ -162,10 +261,38 @@ namespace ExtUI {
       }
       GOTO_SCREEN(StatusScreen);
     }
+<<<<<<< HEAD
   #endif // HAS_PID_HEATING
 
   void onSteppersDisabled() {}
   void onSteppersEnabled()  {}
+=======
+    void onStartM303(const int count, const heater_id_t hid, const celsius_t temp) {
+      // Called by M303 to update the UI
+    }
+  #endif // HAS_PID_HEATING
+
+  #if ENABLED(MPC_AUTOTUNE)
+    void onMPCTuning(const mpcresult_t rst) {
+      // Called for temperature PID tuning result
+      switch (rst) {
+        case MPC_STARTED:
+          StatusScreen::setStatusMessage(GET_TEXT_F(MSG_MPC_AUTOTUNE));
+          break;
+      }
+      GOTO_SCREEN(StatusScreen);
+    }
+  #endif
+
+  #if ENABLED(PLATFORM_M997_SUPPORT)
+    void onFirmwareFlash() {}
+  #endif
+
+  void onSteppersDisabled() {}
+  void onSteppersEnabled() {}
+  void onAxisDisabled(const axis_t) {}
+  void onAxisEnabled(const axis_t) {}
+>>>>>>> bugfix-2.1.x
 }
 
 #endif // TOUCH_UI_FTDI_EVE

@@ -28,10 +28,13 @@
 #include "../../lcd/marlinui.h"
 #include "../../sd/cardreader.h"
 #include "../../libs/numtostr.h"
+<<<<<<< HEAD
 
 #if ENABLED(DWIN_LCD_PROUI)
   #include "../../lcd/e3v2/proui/dwin.h"
 #endif
+=======
+>>>>>>> bugfix-2.1.x
 
 /**
  * M73: Set percentage complete (for display on LCD)
@@ -49,6 +52,7 @@
  */
 void GcodeSuite::M73() {
 
+<<<<<<< HEAD
   #if ENABLED(DWIN_LCD_PROUI)
 
     DWIN_M73();
@@ -71,6 +75,22 @@ void GcodeSuite::M73() {
       if (parser.seenval('C')) ui.set_interaction_time(60 * parser.value_ulong());
     #endif
 
+=======
+  #if ENABLED(SET_PROGRESS_PERCENT)
+    if (parser.seenval('P'))
+      ui.set_progress((PROGRESS_SCALE) > 1
+        ? parser.value_float() * (PROGRESS_SCALE)
+        : parser.value_byte()
+      );
+  #endif
+
+  #if ENABLED(SET_REMAINING_TIME)
+    if (parser.seenval('R')) ui.set_remaining_time(60 * parser.value_ulong());
+  #endif
+
+  #if ENABLED(SET_INTERACTION_TIME)
+    if (parser.seenval('C')) ui.set_interaction_time(60 * parser.value_ulong());
+>>>>>>> bugfix-2.1.x
   #endif
 
   #if ENABLED(M73_REPORT)

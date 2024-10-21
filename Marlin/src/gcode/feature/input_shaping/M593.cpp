@@ -28,6 +28,11 @@
 #include "../../../module/stepper.h"
 
 void GcodeSuite::M593_report(const bool forReplay/*=true*/) {
+<<<<<<< HEAD
+=======
+  TERN_(MARLIN_SMALL_BUILD, return);
+
+>>>>>>> bugfix-2.1.x
   report_heading_etc(forReplay, F("Input Shaping"));
   #if ENABLED(INPUT_SHAPING_X)
     SERIAL_ECHOLNPGM("  M593 X"
@@ -42,6 +47,18 @@ void GcodeSuite::M593_report(const bool forReplay/*=true*/) {
       " D", stepper.get_shaping_damping_ratio(Y_AXIS)
     );
   #endif
+<<<<<<< HEAD
+=======
+  #if ENABLED(INPUT_SHAPING_Z)
+    #if ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y)
+      report_echo_start(forReplay);
+    #endif
+    SERIAL_ECHOLNPGM("  M593 Z"
+      " F", stepper.get_shaping_frequency(Z_AXIS),
+      " D", stepper.get_shaping_damping_ratio(Z_AXIS)
+    );
+  #endif
+>>>>>>> bugfix-2.1.x
 }
 
 /**
@@ -57,14 +74,25 @@ void GcodeSuite::M593() {
 
   const bool seen_X = TERN0(INPUT_SHAPING_X, parser.seen_test('X')),
              seen_Y = TERN0(INPUT_SHAPING_Y, parser.seen_test('Y')),
+<<<<<<< HEAD
              for_X = seen_X || TERN0(INPUT_SHAPING_X, (!seen_X && !seen_Y)),
              for_Y = seen_Y || TERN0(INPUT_SHAPING_Y, (!seen_X && !seen_Y));
+=======
+             seen_Z = TERN0(INPUT_SHAPING_Z, parser.seen_test('Z')),
+             for_X = seen_X || TERN0(INPUT_SHAPING_X, (!seen_X && !seen_Y && !seen_Z)),
+             for_Y = seen_Y || TERN0(INPUT_SHAPING_Y, (!seen_X && !seen_Y && !seen_Z)),
+             for_Z = seen_Z || TERN0(INPUT_SHAPING_Z, (!seen_X && !seen_Y && !seen_Z));
+>>>>>>> bugfix-2.1.x
 
   if (parser.seen('D')) {
     const float zeta = parser.value_float();
     if (WITHIN(zeta, 0, 1)) {
       if (for_X) stepper.set_shaping_damping_ratio(X_AXIS, zeta);
       if (for_Y) stepper.set_shaping_damping_ratio(Y_AXIS, zeta);
+<<<<<<< HEAD
+=======
+      if (for_Z) stepper.set_shaping_damping_ratio(Z_AXIS, zeta);
+>>>>>>> bugfix-2.1.x
     }
     else
       SERIAL_ECHO_MSG("?Zeta (D) value out of range (0-1)");
@@ -76,9 +104,16 @@ void GcodeSuite::M593() {
     if (freq == 0.0f || freq > min_freq) {
       if (for_X) stepper.set_shaping_frequency(X_AXIS, freq);
       if (for_Y) stepper.set_shaping_frequency(Y_AXIS, freq);
+<<<<<<< HEAD
     }
     else
       SERIAL_ECHOLNPGM("?Frequency (F) must be greater than ", min_freq, " or 0 to disable");
+=======
+      if (for_Z) stepper.set_shaping_frequency(Z_AXIS, freq);
+    }
+    else
+      SERIAL_ECHOLNPGM(GCODE_ERR_MSG("Frequency (F) must be greater than ", min_freq, " or 0 to disable"));
+>>>>>>> bugfix-2.1.x
   }
 }
 

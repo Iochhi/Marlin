@@ -231,6 +231,11 @@ void GcodeSuite::M906() {
 }
 
 void GcodeSuite::M906_report(const bool forReplay/*=true*/) {
+<<<<<<< HEAD
+=======
+  TERN_(MARLIN_SMALL_BUILD, return);
+
+>>>>>>> bugfix-2.1.x
   report_heading(forReplay, F(STR_STEPPER_DRIVER_CURRENT));
 
   auto say_M906 = [](const bool forReplay) {

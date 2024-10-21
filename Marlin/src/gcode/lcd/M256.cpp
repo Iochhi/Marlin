@@ -37,6 +37,10 @@ void GcodeSuite::M256() {
 }
 
 void GcodeSuite::M256_report(const bool forReplay/*=true*/) {
+<<<<<<< HEAD
+=======
+  TERN_(MARLIN_SMALL_BUILD, return);
+>>>>>>> bugfix-2.1.x
   report_heading_etc(forReplay, F(STR_LCD_BRIGHTNESS));
   SERIAL_ECHOLNPGM("  M256 B", ui.brightness);
 }

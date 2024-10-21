@@ -39,6 +39,10 @@ namespace Language_en {
   LSTR MSG_BUTTON_OKAY              = u8"Okay";
   LSTR MSG_BUTTON_MENU              = u8"Menu";
   LSTR MSG_BUTTON_MEDIA             = u8"Media";
+<<<<<<< HEAD
+=======
+  LSTR MSG_BUTTON_USB               = u8"USB";
+>>>>>>> bugfix-2.1.x
   LSTR MSG_BUTTON_OPEN              = u8"Open";
   LSTR MSG_CLEAN_NOZZLE             = u8"Clean Nozzle";
   LSTR MSG_VMAX_X                   = u8"Max X Speed";
@@ -65,7 +69,13 @@ namespace Language_en {
   LSTR MSG_HOME                     = u8"Home";
   LSTR MSG_PRINT_STARTING           = u8"Print starting";
   LSTR MSG_PRINT_FINISHED           = u8"Print finished";
+<<<<<<< HEAD
   LSTR MSG_PRINT_ERROR              = u8"Print error";
+=======
+  LSTR MSG_PRINT_COMPLETE           = u8"Print Complete!";
+  LSTR MSG_PRINT_ERROR              = u8"Print error";
+  LSTR MSG_PRINT_AREA_CLEAR         = u8"Please ensure print area is\nclear and ready to print.";
+>>>>>>> bugfix-2.1.x
   LSTR MSG_ABOUT_TOUCH_PANEL_1      = u8"Color Touch Panel";
   LSTR MSG_ABOUT_TOUCH_PANEL_2      = WEBSITE_URL;
   LSTR MSG_LICENSE                  = u8"This program is free software: you can redistribute it and/or modify it under the terms of "
@@ -91,6 +101,10 @@ namespace Language_en {
   LSTR MSG_IDLE                     = u8"idle";
   LSTR MSG_SET_MAXIMUM              = u8"Set Maximum";
   LSTR MSG_PRINT_SPEED              = u8"Print Speed";
+<<<<<<< HEAD
+=======
+  LSTR MSG_SPEED                    = u8"Speed";
+>>>>>>> bugfix-2.1.x
   LSTR MSG_LINEAR_ADVANCE_K         = u8"K";
   LSTR MSG_LINEAR_ADVANCE_K1        = u8"K E1";
   LSTR MSG_LINEAR_ADVANCE_K2        = u8"K E2";
@@ -106,6 +120,10 @@ namespace Language_en {
   LSTR MSG_CALIBRATION_WARNING      = u8"For best results, unload the filament and clean the hotend prior to starting calibration. Continue?";
   LSTR MSG_START_PRINT_CONFIRMATION = u8"Start printing %s?";
   LSTR MSG_ABORT_WARNING            = u8"Are you sure you want to cancel the print?";
+<<<<<<< HEAD
+=======
+  LSTR MSG_START_NEXT_PRINT         = u8"Start Next Print";
+>>>>>>> bugfix-2.1.x
   LSTR MSG_EXTRUDER_SELECTION       = u8"Extruder Selection";
   LSTR MSG_CURRENT_TEMPERATURE      = u8"Current Temp";
   LSTR MSG_REMOVAL_TEMPERATURE      = u8"Removal Temp";
@@ -113,6 +131,11 @@ namespace Language_en {
   LSTR MSG_HOT                      = u8"Hot!";
   LSTR MSG_UNLOAD_FILAMENT          = u8"Unload/Retract";
   LSTR MSG_LOAD_FILAMENT            = u8"Load/Extrude";
+<<<<<<< HEAD
+=======
+  LSTR MSG_LOAD                     = u8"Load";
+  LSTR MSG_UNLOAD                   = u8"Unload";
+>>>>>>> bugfix-2.1.x
   LSTR MSG_MOMENTARY                = u8"Momentary";
   LSTR MSG_CONTINUOUS               = u8"Continuous";
   LSTR MSG_PRINT_MENU               = u8"Print Menu";

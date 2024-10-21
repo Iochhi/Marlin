@@ -388,7 +388,11 @@ uint32_t picInfoWrite(uint8_t *P_name, uint32_t P_size) {
   }
 
   static int8_t arrayFindStr(FSTR_P const arr[], uint8_t arraySize, const char *str) {
+<<<<<<< HEAD
     for (uint8_t a = 0; a < arraySize; ++a) {
+=======
+    for (uint8_t a = 0; a < arraySize; a++) {
+>>>>>>> bugfix-2.1.x
       if (strcasecmp(FTOP(arr[a]), str) == 0)
         return a;
     }

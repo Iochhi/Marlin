@@ -42,7 +42,11 @@ constexpr pin_t analogInputToDigitalPin(const int8_t p) {
 }
 
 // Get the analog index for a digital pin
+<<<<<<< HEAD
 constexpr int8_t DIGITAL_PIN_TO_ANALOG_PIN(const pin_t p) {
+=======
+constexpr int8_t digitalPinToAnalogIndex(const pin_t p) {
+>>>>>>> bugfix-2.1.x
   return (WITHIN(p, analog_offset, NUM_DIGITAL_PINS) ? p - analog_offset : P_NC);
 }
 
@@ -50,7 +54,11 @@ constexpr int8_t DIGITAL_PIN_TO_ANALOG_PIN(const pin_t p) {
 constexpr int16_t GET_PIN_MAP_INDEX(const pin_t pin) { return pin; }
 
 // Test whether the pin is valid
+<<<<<<< HEAD
 constexpr bool VALID_PIN(const pin_t p) { return WITHIN(p, 0, NUM_DIGITAL_PINS); }
+=======
+constexpr bool isValidPin(const pin_t p) { return WITHIN(p, 0, NUM_DIGITAL_PINS); }
+>>>>>>> bugfix-2.1.x
 
 // Test whether the pin is PWM
 constexpr bool PWM_PIN(const pin_t p) { return false; }

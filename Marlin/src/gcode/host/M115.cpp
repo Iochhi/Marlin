@@ -20,10 +20,16 @@
  *
  */
 
-#include "../gcode.h"
 #include "../../inc/MarlinConfig.h"
+
+<<<<<<< HEAD
+=======
+#if ENABLED(CAPABILITIES_REPORT)
+
+#include "../gcode.h"
 #include "../queue.h"           // for getting the command port
 
+>>>>>>> bugfix-2.1.x
 #if ENABLED(M115_GEOMETRY_REPORT)
   #include "../../module/motion.h"
 #endif
@@ -32,7 +38,11 @@
   #include "../../feature/caselight.h"
 #endif
 
+<<<<<<< HEAD
 #if ENABLED(HAS_STM32_UID) && !defined(MACHINE_UUID)
+=======
+#if !defined(MACHINE_UUID) && ENABLED(HAS_STM32_UID)
+>>>>>>> bugfix-2.1.x
   #include "../../libs/hex_print.h"
 #endif
 
@@ -60,15 +70,36 @@
  */
 void GcodeSuite::M115() {
 
+<<<<<<< HEAD
+=======
+  // Hosts should match one of these
+  #define MACHINE_KINEMATICS "" \
+    TERN_(COREXY, "COREXY") TERN_(COREYX, "COREYX") \
+    TERN_(COREXZ, "COREXZ") TERN_(COREZX, "COREZX") \
+    TERN_(COREYZ, "COREYZ") TERN_(COREZY, "COREZY") \
+    TERN_(MARKFORGED_XY, "MARKFORGED_XY") TERN_(MARKFORGED_YX, "MARKFORGED_YX") \
+    TERN_(POLARGRAPH, "POLARGRAPH") \
+    TERN_(POLAR, "POLAR") \
+    TERN_(DELTA, "DELTA") \
+    TERN_(IS_SCARA, "SCARA") \
+    TERN_(IS_CARTESIAN, "Cartesian") \
+    TERN_(BELTPRINTER, " BELTPRINTER")
+
+>>>>>>> bugfix-2.1.x
   SERIAL_ECHOPGM("FIRMWARE_NAME:Marlin"
     " " DETAILED_BUILD_VERSION " (" __DATE__ " " __TIME__ ")"
     " SOURCE_CODE_URL:" SOURCE_CODE_URL
     " PROTOCOL_VERSION:" PROTOCOL_VERSION
     " MACHINE_TYPE:" MACHINE_NAME
+<<<<<<< HEAD
+=======
+    " KINEMATICS:" MACHINE_KINEMATICS
+>>>>>>> bugfix-2.1.x
     " EXTRUDER_COUNT:" STRINGIFY(EXTRUDERS)
     #if NUM_AXES != XYZ
       " AXIS_COUNT:" STRINGIFY(NUM_AXES)
     #endif
+<<<<<<< HEAD
     #ifdef MACHINE_UUID
       " UUID:" MACHINE_UUID
     #endif
@@ -87,6 +118,34 @@ void GcodeSuite::M115() {
       uid_address += 4U;
       for (int B = 24; B >= 0; B -= 8) print_hex_byte(UID >> B);
     }
+=======
+    #if defined(MACHINE_UUID) || ENABLED(HAS_STM32_UID)
+      " UUID:"
+    #endif
+    #ifdef MACHINE_UUID
+      MACHINE_UUID
+    #endif
+  );
+
+  #if !defined(MACHINE_UUID) && ENABLED(HAS_STM32_UID)
+    /**
+     * STM32-based devices have a 96-bit CPU device serial number.
+     * Used by LumenPnP / OpenPNP to keep track of unique hardware/configurations.
+     * https://github.com/opulo-inc/lumenpnp
+     * This code should work on all STM32-based boards.
+     */
+    #if ENABLED(STM32_UID_SHORT_FORM)
+      const uint32_t * const UID = (uint32_t*)UID_BASE;
+      for (uint8_t i = 0; i < 3; i++) print_hex_long(UID[i]);
+    #else
+      const uint16_t * const UID = (uint16_t*)UID_BASE; // Little-endian!
+      SERIAL_ECHO(F("CEDE2A2F-"));
+      for (uint8_t i = 1; i <= 6; i++) {
+        print_hex_word(UID[(i % 2) ? i : i - 2]);       // 1111-0000-3333-222255554444
+        if (i <= 3) SERIAL_ECHO(C('-'));
+      }
+    #endif
+>>>>>>> bugfix-2.1.x
   #endif
 
   SERIAL_EOL();
@@ -204,6 +263,12 @@ void GcodeSuite::M115() {
 
     // BABYSTEPPING (M290)
     cap_line(F("BABYSTEPPING"), ENABLED(BABYSTEPPING));
+<<<<<<< HEAD
+=======
+
+    // EP_BABYSTEP (M293, M294)
+    cap_line(F("EP_BABYSTEP"), ENABLED(EP_BABYSTEPPING));
+>>>>>>> bugfix-2.1.x
 
     // CHAMBER_TEMPERATURE (M141, M191)
     cap_line(F("CHAMBER_TEMPERATURE"), ENABLED(HAS_HEATED_CHAMBER));
@@ -269,3 +334,5 @@ void GcodeSuite::M115() {
 
   #endif // EXTENDED_CAPABILITIES_REPORT
 }
+
+#endif // CAPABILITIES_REPORT

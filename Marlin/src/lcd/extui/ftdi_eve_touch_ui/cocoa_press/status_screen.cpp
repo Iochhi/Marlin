@@ -116,7 +116,11 @@ void StatusScreen::send_buffer(CommandProcessor &cmd, const void *data, uint16_t
     memcpy_P(block, ptr, nBytes);
     cmd.write((const void*)block, nBytes);
     cmd.execute();
+<<<<<<< HEAD
     if(cmd.has_fault()) {
+=======
+    if (cmd.has_fault()) {
+>>>>>>> bugfix-2.1.x
       SERIAL_ECHOLNPGM("Recovering from fault: ");
       cmd.reset();
       delay(1000);
@@ -227,8 +231,13 @@ void StatusScreen::draw_buttons(draw_mode_t what) {
   if (what & FOREGROUND) {
     int16_t x, y, w, h;
 
+<<<<<<< HEAD
     const bool can_print        = !isPrinting() && isMediaInserted() && isFileSelected();
     const bool can_select       = !isPrinting() && isMediaInserted();
+=======
+    const bool can_print        = !isPrinting() && isMediaMounted() && isFileSelected();
+    const bool can_select       = !isPrinting() && isMediaMounted();
+>>>>>>> bugfix-2.1.x
     const bool sdOrHostPrinting = ExtUI::isPrinting();
     const bool sdOrHostPaused   = ExtUI::isPrintingPaused();
 
@@ -284,7 +293,11 @@ void StatusScreen::draw_file(draw_mode_t what) {
        .cmd (BITMAP_SIZE  (File_Icon_Info))
        .icon(ICON_POS(x, y, w, h), File_Icon_Info, icon_scale);
 
+<<<<<<< HEAD
     if (!isMediaInserted())
+=======
+    if (!isMediaMounted())
+>>>>>>> bugfix-2.1.x
       draw_text_with_ellipsis(cmd, TEXT_POS(x, y, w, h), F("No media present"), OPT_CENTERY, font_small);
     else if (isFileSelected()) {
       FileList list;
@@ -311,7 +324,11 @@ void StatusScreen::draw_message(draw_mode_t what, const char *message) {
 }
 
 bool StatusScreen::isFileSelected() {
+<<<<<<< HEAD
   if (!isMediaInserted()) return false;
+=======
+  if (!isMediaMounted()) return false;
+>>>>>>> bugfix-2.1.x
   FileList list;
   if (list.isDir()) return false;
   const char *filename = list.filename();
@@ -431,7 +448,11 @@ void StatusScreen::onIdle() {
   }
 }
 
+<<<<<<< HEAD
 void StatusScreen::onMediaInserted() {
+=======
+void StatusScreen::onMediaMounted() {
+>>>>>>> bugfix-2.1.x
   if (AT_SCREEN(StatusScreen))
     setStatusMessage(GET_TEXT_F(MSG_MEDIA_INSERTED));
 }

@@ -22,7 +22,11 @@
 
 #include "../../../inc/MarlinConfigPre.h"
 
+<<<<<<< HEAD
 #if ALL(HAS_TFT_LVGL_UI, HAS_CLASSIC_JERK)
+=======
+#if ALL(HAS_TFT_LVGL_UI, CLASSIC_JERK)
+>>>>>>> bugfix-2.1.x
 
 #include "draw_ui.h"
 #include <lv_conf.h>
@@ -96,4 +100,4 @@ void lv_clear_jerk_settings() {
   lv_obj_del(scr);
 }
 
-#endif // HAS_TFT_LVGL_UI && HAS_CLASSIC_JERK
+#endif // HAS_TFT_LVGL_UI && CLASSIC_JERK

@@ -45,6 +45,17 @@ XPT2046 touch;
 
 #if ENABLED(POWER_LOSS_RECOVERY)
   #include "../../../feature/powerloss.h"
+<<<<<<< HEAD
+#endif
+
+#if HAS_SERVOS
+  #include "../../../module/servo.h"
+#endif
+
+#if ANY(PROBE_TARE, HAS_Z_SERVO_PROBE)
+  #include "../../../module/probe.h"
+=======
+>>>>>>> bugfix-2.1.x
 #endif
 
 #if HAS_SERVOS
@@ -55,8 +66,12 @@ XPT2046 touch;
   #include "../../../module/probe.h"
 #endif
 
+#include "../../tft_io/touch_calibration.h"
 #if ENABLED(TOUCH_SCREEN_CALIBRATION)
+<<<<<<< HEAD
   #include "../../tft_io/touch_calibration.h"
+=======
+>>>>>>> bugfix-2.1.x
   #include "draw_touch_calibration.h"
 #endif
 
@@ -155,6 +170,15 @@ void tft_lvgl_init() {
   #endif
 
   hal.watchdog_refresh();     // LVGL init takes time
+<<<<<<< HEAD
+
+  #if HAS_MEDIA
+    UpdateAssets();
+    hal.watchdog_refresh();   // LVGL init takes time
+    TERN_(MKS_TEST, mks_test_get());
+  #endif
+=======
+>>>>>>> bugfix-2.1.x
 
   #if HAS_MEDIA
     UpdateAssets();
@@ -162,7 +186,7 @@ void tft_lvgl_init() {
     TERN_(MKS_TEST, mks_test_get());
   #endif
 
-  touch.Init();
+  touch.init();
 
   lv_init();
 
@@ -216,7 +240,10 @@ void tft_lvgl_init() {
 
   tft_style_init();
   filament_pin_setup();
+<<<<<<< HEAD
   lv_encoder_pin_init();
+=======
+>>>>>>> bugfix-2.1.x
 
   #if ENABLED(MKS_WIFI_MODULE)
     mks_esp_wifi_init();
@@ -237,11 +264,19 @@ void tft_lvgl_init() {
       uiCfg.print_state = REPRINTING;
 
       #if ENABLED(LONG_FILENAME_HOST_SUPPORT)
+<<<<<<< HEAD
         strncpy(public_buf_m, recovery.info.sd_filename, sizeof(public_buf_m) - 1);
         card.printLongPath(public_buf_m);
         strncpy(list_file.long_name[sel_id], card.longFilename, sizeof(list_file.long_name[0]) - 1);
       #else
         strncpy(list_file.long_name[sel_id], recovery.info.sd_filename, sizeof(list_file.long_name[0]) - 1);
+=======
+        strlcpy(public_buf_m, recovery.info.sd_filename, sizeof(public_buf_m));
+        card.printLongPath(public_buf_m);
+        strlcpy(list_file.long_name[sel_id], card.longFilename, sizeof(list_file.long_name[0]));
+      #else
+        strlcpy(list_file.long_name[sel_id], recovery.info.sd_filename, sizeof(list_file.long_name[0]));
+>>>>>>> bugfix-2.1.x
       #endif
       lv_draw_printing();
     }
@@ -264,7 +299,11 @@ void dmc_tc_handler(struct __DMA_HandleTypeDef * hdma) {
   #if ENABLED(USE_SPI_DMA_TC)
     lv_disp_flush_ready(disp_drv_p);
     lcd_dma_trans_lock = false;
+<<<<<<< HEAD
     TFT_SPI::Abort();
+=======
+    TFT_SPI::abort();
+>>>>>>> bugfix-2.1.x
   #endif
 }
 
@@ -278,10 +317,17 @@ void my_disp_flush(lv_disp_drv_t * disp, const lv_area_t * area, lv_color_t * co
 
   #if ENABLED(USE_SPI_DMA_TC)
     lcd_dma_trans_lock = true;
+<<<<<<< HEAD
     SPI_TFT.tftio.WriteSequenceIT((uint16_t*)color_p, width * height);
     TFT_SPI::DMAtx.XferCpltCallback = dmc_tc_handler;
   #else
     SPI_TFT.tftio.WriteSequence((uint16_t*)color_p, width * height);
+=======
+    SPI_TFT.tftio.writeSequenceIT((uint16_t*)color_p, width * height);
+    TFT_SPI::DMAtx.XferCpltCallback = dmc_tc_handler;
+  #else
+    SPI_TFT.tftio.writeSequence((uint16_t*)color_p, width * height);
+>>>>>>> bugfix-2.1.x
     lv_disp_flush_ready(disp_drv_p); // Indicate you are ready with the flushing
   #endif
 
@@ -297,7 +343,7 @@ void lv_fill_rect(lv_coord_t x1, lv_coord_t y1, lv_coord_t x2, lv_coord_t y2, lv
   width = x2 - x1 + 1;
   height = y2 - y1 + 1;
   SPI_TFT.setWindow((uint16_t)x1, (uint16_t)y1, width, height);
-  SPI_TFT.tftio.WriteMultiple(bk_color.full, width * height);
+  SPI_TFT.tftio.writeMultiple(bk_color.full, width * height);
   W25QXX.init(SPI_QUARTER_SPEED);
 }
 
@@ -310,16 +356,18 @@ static bool get_point(int16_t * const x, int16_t * const y) {
 
   #if ENABLED(TOUCH_SCREEN_CALIBRATION)
     const calibrationState state = touch_calibration.get_calibration_state();
+<<<<<<< HEAD
     if (WITHIN(state, CALIBRATION_TOP_LEFT, CALIBRATION_BOTTOM_RIGHT)) {
+=======
+    if (WITHIN(state, CALIBRATION_TOP_LEFT, CALIBRATION_BOTTOM_LEFT)) {
+>>>>>>> bugfix-2.1.x
       if (touch_calibration.handleTouch(*x, *y)) lv_update_touch_calibration_screen();
       return false;
     }
-    *x = int16_t((int32_t(*x) * touch_calibration.calibration.x) >> 16) + touch_calibration.calibration.offset_x;
-    *y = int16_t((int32_t(*y) * touch_calibration.calibration.y) >> 16) + touch_calibration.calibration.offset_y;
-  #else
-    *x = int16_t((int32_t(*x) * TOUCH_CALIBRATION_X) >> 16) + TOUCH_OFFSET_X;
-    *y = int16_t((int32_t(*y) * TOUCH_CALIBRATION_Y) >> 16) + TOUCH_OFFSET_Y;
   #endif
+
+  *x = int16_t((int32_t(*x) * _TOUCH_CALIBRATION_X) >> 16) + _TOUCH_OFFSET_X;
+  *y = int16_t((int32_t(*y) * _TOUCH_CALIBRATION_Y) >> 16) + _TOUCH_OFFSET_Y;
 
   return true;
 }
@@ -333,12 +381,12 @@ bool my_touchpad_read(lv_indev_drv_t * indev_driver, lv_indev_data_t * data) {
 }
 
 int16_t enc_diff = 0;
-lv_indev_state_t state = LV_INDEV_STATE_REL;
+lv_indev_state_t indev_enc_state = LV_INDEV_STATE_REL; // ENC button is pressed or released
 
 bool my_mousewheel_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data) {
-  (void) indev_drv;   // Unused
+  UNUSED(indev_drv);
 
-  data->state = state;
+  data->state = indev_enc_state;
   data->enc_diff = enc_diff;
   enc_diff = 0;
 
@@ -448,21 +496,49 @@ lv_fs_res_t sd_tell_cb(lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p) {
   return LV_FS_RES_OK;
 }
 
-void lv_encoder_pin_init() {
-  #if BUTTON_EXISTS(EN1)
-    SET_INPUT_PULLUP(BTN_EN1);
+void lv_update_encoder() {
+
+  #if ANY_BUTTON(EN1, EN2)
+    constexpr uint8_t epps = ENCODER_PULSES_PER_STEP;   // We can fill in
+    static uint8_t pulse_count;
+    pulse_count += ui.get_encoder_delta();
+    const int8_t fullSteps = pulse_count / epps;
+    pulse_count -= fullSteps * epps;
+    enc_diff += fullSteps;
   #endif
-  #if BUTTON_EXISTS(EN2)
-    SET_INPUT_PULLUP(BTN_EN2);
+
+  #if ANY_BUTTON(ENC, BACK, UP, DOWN, LEFT, RIGHT)
+    static millis_t last_encoder_ms;
+    const millis_t now = millis(), diffTime = getTickDiff(now, last_encoder_ms);
+    if (diffTime <= 50) return;
   #endif
+
   #if BUTTON_EXISTS(ENC)
-    SET_INPUT_PULLUP(BTN_ENC);
+    static uint8_t old_button_enc = LV_INDEV_STATE_REL;
+    const uint8_t enc_c = BUTTON_PRESSED(ENC) ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
+    if (enc_c != old_button_enc) {
+      indev_enc_state = enc_c ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
+      old_button_enc = enc_c;
+    }
   #endif
 
   #if BUTTON_EXISTS(BACK)
-    SET_INPUT_PULLUP(BTN_BACK);
+    if (BUTTON_PRESSED(BACK)) {}
+  #endif
+  #if BUTTON_EXISTS(UP)
+    if (BUTTON_PRESSED(UP)) {}
+  #endif
+  #if BUTTON_EXISTS(DOWN)
+    if (BUTTON_PRESSED(DOWN)) {}
+  #endif
+  #if BUTTON_EXISTS(LEFT)
+    if (BUTTON_PRESSED(LEFT)) {}
+  #endif
+  #if BUTTON_EXISTS(RIGHT)
+    if (BUTTON_PRESSED(RIGHT)) {}
   #endif
 
+<<<<<<< HEAD
   #if BUTTON_EXISTS(UP)
     SET_INPUT(BTN_UP);
   #endif
@@ -543,6 +619,15 @@ void lv_encoder_pin_init() {
   }
 
 #endif // HAS_ENCODER_ACTION
+=======
+}
+
+#ifdef __PLAT_NATIVE_SIM__
+  #include <lv_misc/lv_log.h>
+  typedef void (*lv_log_print_g_cb_t)(lv_log_level_t level, const char *, uint32_t, const char *);
+  extern "C" void lv_log_register_print_cb(lv_log_print_g_cb_t print_cb) {}
+#endif
+>>>>>>> bugfix-2.1.x
 
 #ifdef __PLAT_NATIVE_SIM__
   #include <lv_misc/lv_log.h>

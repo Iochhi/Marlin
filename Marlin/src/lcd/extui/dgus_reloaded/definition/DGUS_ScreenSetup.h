@@ -21,10 +21,17 @@
  */
 #pragma once
 
+<<<<<<< HEAD
 #include "../config/DGUS_Screen.h"
 
 struct DGUS_ScreenSetup {
   DGUS_Screen   screen;
+=======
+#include "../config/DGUS_ScreenID.h"
+
+struct DGUS_ScreenSetup {
+  DGUS_ScreenID screenID;
+>>>>>>> bugfix-2.1.x
   bool          (*setup_fn)(void);
 };
 

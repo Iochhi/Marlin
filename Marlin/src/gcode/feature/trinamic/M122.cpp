@@ -61,12 +61,21 @@ void GcodeSuite::M122() {
     #endif
 
     if (parser.seen_test('V'))
+<<<<<<< HEAD
       tmc_get_registers(LOGICAL_AXIS_ELEM(print_axis));
     else
       tmc_report_all(LOGICAL_AXIS_ELEM(print_axis));
   #endif
 
   test_tmc_connection(LOGICAL_AXIS_ELEM(print_axis));
+=======
+      tmc_get_registers(LOGICAL_AXIS_ELEM_LC(print_axis));
+    else
+      tmc_report_all(LOGICAL_AXIS_ELEM_LC(print_axis));
+  #endif
+
+  test_tmc_connection(LOGICAL_AXIS_ELEM_LC(print_axis));
+>>>>>>> bugfix-2.1.x
 }
 
 #endif // HAS_TRINAMIC_CONFIG

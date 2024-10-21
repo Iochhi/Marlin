@@ -24,11 +24,16 @@
 #include "DGUSDisplay.h"
 #include "definition/DGUS_VP.h"
 
+<<<<<<< HEAD
 #define Swap16(val) ((uint16_t)(((uint16_t)(val) >> 8) | ((uint16_t)(val) << 8)))
+=======
+#define Swap16(val) (uint16_t((uint16_t(val) >> 8) | (uint16_t(val) << 8)))
+>>>>>>> bugfix-2.1.x
 
 namespace DGUSTxHandler {
 
   #if HAS_MEDIA
+<<<<<<< HEAD
     void SetFileControlState(int, bool);
     void FileType(DGUS_VP &);
     void FileName(DGUS_VP &);
@@ -81,10 +86,65 @@ namespace DGUSTxHandler {
 
   template<typename T>
   void ExtraToInteger(DGUS_VP &vp) {
+=======
+    void setFileControlState(int16_t, bool);
+    void fileType(DGUS_VP &);
+    void fileName(DGUS_VP &);
+    void scrollIcons(DGUS_VP &);
+    void selectedFileName(DGUS_VP &);
+  #endif
+
+  void zPosition(DGUS_VP &);
+  void elapsed(DGUS_VP &);
+  void percent(DGUS_VP &);
+  void statusIcons(DGUS_VP &);
+
+  void flowrate(DGUS_VP &);
+
+  void tempMax(DGUS_VP &);
+
+  void stepperStatus(DGUS_VP &);
+
+  void stepIcons(DGUS_VP &);
+
+  void ablDisableIcon(DGUS_VP &);
+  void ablGrid(DGUS_VP &);
+
+  void filamentIcons(DGUS_VP &);
+
+  void blTouch(DGUS_VP &);
+
+  void pidIcons(DGUS_VP &);
+  void pidKp(DGUS_VP &);
+  void pidKi(DGUS_VP &);
+  void pidKd(DGUS_VP &);
+
+  void buildVolume(DGUS_VP &);
+  void totalPrints(DGUS_VP &);
+  void finishedPrints(DGUS_VP &);
+  void printTime(DGUS_VP &);
+  void longestPrint(DGUS_VP &);
+  void filamentUsed(DGUS_VP &);
+
+  void waitIcons(DGUS_VP &);
+
+  void fanSpeed(DGUS_VP &);
+
+  void volume(DGUS_VP &);
+
+  void brightness(DGUS_VP &);
+
+  void extraToString(DGUS_VP &);
+  void extraPGMToString(DGUS_VP &);
+
+  template<typename T>
+  void extraToInteger(DGUS_VP &vp) {
+>>>>>>> bugfix-2.1.x
     if (!vp.size || !vp.extra) return;
     switch (vp.size) {
       default: return;
       case 1: {
+<<<<<<< HEAD
         const uint8_t data = (uint8_t)(*(T*)vp.extra);
         dgus_display.Write((uint16_t)vp.addr, data);
         break;
@@ -97,17 +157,36 @@ namespace DGUSTxHandler {
       case 4: {
         const uint32_t data = (uint32_t)(*(T*)vp.extra);
         dgus_display.Write((uint16_t)vp.addr, dgus_display.SwapBytes(data));
+=======
+        const uint8_t data = uint8_t(*(T*)vp.extra);
+        dgus.write(uint16_t(vp.addr), data);
+        break;
+      }
+      case 2: {
+        const uint16_t data = uint16_t(*(T*)vp.extra);
+        dgus.write(uint16_t(vp.addr), Swap16(data));
+        break;
+      }
+      case 4: {
+        const uint32_t data = uint32_t(*(T*)vp.extra);
+        dgus.write(uint16_t(vp.addr), dgus.swapBytes(data));
+>>>>>>> bugfix-2.1.x
         break;
       }
     }
   }
 
   template<typename T, uint8_t decimals>
+<<<<<<< HEAD
   void ExtraToFixedPoint(DGUS_VP &vp) {
+=======
+  void extraToFixedPoint(DGUS_VP &vp) {
+>>>>>>> bugfix-2.1.x
     if (!vp.size || !vp.extra) return;
     switch (vp.size) {
       default: return;
       case 1: {
+<<<<<<< HEAD
         const uint8_t data = dgus_display.ToFixedPoint<T, uint8_t, decimals>(*(T*)vp.extra);
         dgus_display.Write((uint16_t)vp.addr, data);
         break;
@@ -120,6 +199,20 @@ namespace DGUSTxHandler {
       case 4: {
         const uint32_t data = dgus_display.ToFixedPoint<T, uint32_t, decimals>(*(T*)vp.extra);
         dgus_display.Write((uint16_t)vp.addr, dgus_display.SwapBytes(data));
+=======
+        const uint8_t data = dgus.toFixedPoint<T, uint8_t, decimals>(*(T*)vp.extra);
+        dgus.write(uint16_t(vp.addr), data);
+        break;
+      }
+      case 2: {
+        const uint16_t data = dgus.toFixedPoint<T, uint16_t, decimals>(*(T*)vp.extra);
+        dgus.write(uint16_t(vp.addr), Swap16(data));
+        break;
+      }
+      case 4: {
+        const uint32_t data = dgus.toFixedPoint<T, uint32_t, decimals>(*(T*)vp.extra);
+        dgus.write(uint16_t(vp.addr), dgus.swapBytes(data));
+>>>>>>> bugfix-2.1.x
         break;
       }
     }

@@ -24,6 +24,7 @@
 /**
  * DWIN Single var plot
  * Author: Miguel A. Risco-Castillo
+<<<<<<< HEAD
  * Version: 2.1.2
  * Date: 2022/11/20
  *
@@ -41,10 +42,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * For commercial applications additional licenses can be requested
+=======
+ * Version: 2.2.3
+ * Date: 2023/01/29
+>>>>>>> bugfix-2.1.x
  */
 
 #include "dwinui.h"
 
+<<<<<<< HEAD
 class PlotClass {
 public:
   void Draw(frame_rect_t frame, float max, float ref = 0);
@@ -52,3 +58,19 @@ public:
 };
 
 extern PlotClass Plot;
+=======
+class Plot {
+public:
+  static void draw(const frame_rect_t &frame, const_celsius_float_t max, const_celsius_float_t ref=0);
+  static void update(const_celsius_float_t value);
+
+private:
+  static struct PlotData {
+    uint16_t graphpoints, r, x2, y2, yP = 0;
+    frame_rect_t graphframe = {0};
+    float scale = 0;
+  } data;
+};
+
+extern Plot plot;
+>>>>>>> bugfix-2.1.x

@@ -22,13 +22,21 @@
 
 /**
  * DWIN Endstops diagnostic page for PRO UI
+<<<<<<< HEAD
  * Author: Miguel A. Risco-Castillo (MRISCOC)
  * Version: 1.3.3
  * Date: 2022/10/07
+=======
+ * Based on the original work of: Miguel Risco-Castillo (MRISCOC)
+ * https://github.com/mriscoc/Ender3V2S1
+ * Version: 1.4.3
+ * Date: 2023/05/10
+>>>>>>> bugfix-2.1.x
  */
 
 #include "../../../inc/MarlinConfigPre.h"
 
+<<<<<<< HEAD
 #if ALL(DWIN_LCD_PROUI, HAS_ESDIAG)
 
 #include "endstop_diag.h"
@@ -39,6 +47,18 @@
 #include "dwinui.h"
 #include "dwin_popup.h"
 #include "dwin.h"
+=======
+#if ENABLED(DWIN_LCD_PROUI)
+
+#include "dwin_defines.h"
+
+#if HAS_ESDIAG
+
+#include "endstop_diag.h"
+#include "../../marlinui.h"
+#include "dwin.h"
+#include "dwin_popup.h"
+>>>>>>> bugfix-2.1.x
 
 #if HAS_FILAMENT_SENSOR
   #include "../../../feature/runout.h"
@@ -48,6 +68,7 @@
   #include "../../../module/probe.h"
 #endif
 
+<<<<<<< HEAD
 ESDiagClass ESDiag;
 
 void draw_es_label(FSTR_P const flabel=nullptr) {
@@ -55,11 +76,21 @@ void draw_es_label(FSTR_P const flabel=nullptr) {
   if (flabel) DWINUI::Draw_String(F(flabel));
   DWINUI::Draw_String(F(": "));
   DWINUI::MoveBy(0, 25);
+=======
+ESDiag esDiag;
+
+void draw_es_label(FSTR_P const flabel=nullptr) {
+  DWINUI::cursor.x = 40;
+  if (flabel) DWINUI::drawString(F(flabel));
+  DWINUI::drawString(F(": "));
+  DWINUI::moveBy(0, 25);
+>>>>>>> bugfix-2.1.x
 }
 
 void draw_es_state(const bool is_hit) {
   const uint8_t LM = 130;
   DWINUI::cursor.x = LM;
+<<<<<<< HEAD
   DWIN_Draw_Rectangle(1, HMI_data.PopupBg_Color, LM, DWINUI::cursor.y, LM + 100, DWINUI::cursor.y + 20);
   is_hit ? DWINUI::Draw_String(RGB(31,31,16), F(STR_ENDSTOP_HIT)) : DWINUI::Draw_String(RGB(16,63,16), F(STR_ENDSTOP_OPEN));
   DWINUI::MoveBy(0, 25);
@@ -106,3 +137,36 @@ void ESDiagClass::Update() {
 }
 
 #endif // DWIN_LCD_PROUI && HAS_ESDIAG
+=======
+  dwinDrawRectangle(1, hmiData.colorPopupBg, LM, DWINUI::cursor.y, LM + 100, DWINUI::cursor.y + 20);
+  is_hit ? DWINUI::drawString(RGB(31,31,16), F(STR_ENDSTOP_HIT)) : DWINUI::drawString(RGB(16,63,16), F(STR_ENDSTOP_OPEN));
+  DWINUI::moveBy(0, 25);
+}
+
+void ESDiag::draw() {
+  title.showCaption(GET_TEXT_F(MSG_ENDSTOP_TEST));
+  DWINUI::clearMainArea();
+  drawPopupBkgd();
+  DWINUI::drawButton(BTN_Continue, 86, 250);
+  DWINUI::cursor.y = 80;
+  #define ES_LABEL(S) draw_es_label(F(STR_##S))
+  TERN_(USE_X_MIN, ES_LABEL(X_MIN)); TERN_(USE_X_MAX, ES_LABEL(X_MAX));
+  TERN_(USE_Y_MIN, ES_LABEL(Y_MIN)); TERN_(USE_Y_MAX, ES_LABEL(Y_MAX));
+  TERN_(USE_Z_MIN, ES_LABEL(Z_MIN)); TERN_(USE_Z_MAX, ES_LABEL(Z_MAX));
+  TERN_(HAS_FILAMENT_SENSOR, draw_es_label(F(STR_FILAMENT)));
+  update();
+}
+
+void ESDiag::update() {
+  DWINUI::cursor.y = 80;
+  #define ES_REPORT(S) draw_es_state(READ(S##_PIN) == S##_ENDSTOP_HIT_STATE)
+  TERN_(USE_X_MIN, ES_REPORT(X_MIN)); TERN_(USE_X_MAX, ES_REPORT(X_MAX));
+  TERN_(USE_Y_MIN, ES_REPORT(Y_MIN)); TERN_(USE_Y_MAX, ES_REPORT(Y_MAX));
+  TERN_(USE_Z_MIN, ES_REPORT(Z_MIN)); TERN_(USE_Z_MAX, ES_REPORT(Z_MAX));
+  TERN_(HAS_FILAMENT_SENSOR, draw_es_state(READ(FIL_RUNOUT1_PIN) != FIL_RUNOUT1_STATE));
+  dwinUpdateLCD();
+}
+
+#endif // HAS_ESDIAG
+#endif // DWIN_LCD_PROUI
+>>>>>>> bugfix-2.1.x

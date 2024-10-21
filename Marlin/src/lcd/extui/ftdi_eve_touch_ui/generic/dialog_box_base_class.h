@@ -32,10 +32,20 @@ class DialogBoxBaseClass : public BaseScreen {
 
     template<typename T> static void drawButton(T);
     static void drawYesNoButtons(uint8_t default_btn = 0);
+<<<<<<< HEAD
     static void drawOkayButton();
 
     static void onRedraw(draw_mode_t) {}
 
+=======
+    static void drawStartPrintButtons(uint8_t default_btn = 0);
+    static void drawOkayButton();
+    static void drawDoneButton();
+    static void drawFilamentButtons();
+
+    static void onRedraw(draw_mode_t) {}
+
+>>>>>>> bugfix-2.1.x
   public:
     static bool onTouchEnd(uint8_t tag);
     static void onIdle();

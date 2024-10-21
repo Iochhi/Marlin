@@ -64,7 +64,11 @@ void GcodeSuite::M919() {
     if (WITHIN(toff, 1, 15))
       DEBUG_ECHOLNPGM(".toff: ", toff);
     else {
+<<<<<<< HEAD
       SERIAL_ECHOLNPGM("?O out of range (1..15)");
+=======
+      SERIAL_ECHOLNPGM(GCODE_ERR_MSG("O out of range (1..15)"));
+>>>>>>> bugfix-2.1.x
       err = true;
     }
   }
@@ -74,7 +78,11 @@ void GcodeSuite::M919() {
     if (WITHIN(hend, -3, 12))
       DEBUG_ECHOLNPGM(".hend: ", hend);
     else {
+<<<<<<< HEAD
       SERIAL_ECHOLNPGM("?P out of range (-3..12)");
+=======
+      SERIAL_ECHOLNPGM(GCODE_ERR_MSG("P out of range (-3..12)"));
+>>>>>>> bugfix-2.1.x
       err = true;
     }
   }
@@ -84,7 +92,11 @@ void GcodeSuite::M919() {
     if (WITHIN(hstrt, 1, 8))
       DEBUG_ECHOLNPGM(".hstrt: ", hstrt);
     else {
+<<<<<<< HEAD
       SERIAL_ECHOLNPGM("?S out of range (1..8)");
+=======
+      SERIAL_ECHOLNPGM(GCODE_ERR_MSG("S out of range (1..8)"));
+>>>>>>> bugfix-2.1.x
       err = true;
     }
   }
@@ -118,7 +130,11 @@ void GcodeSuite::M919() {
     // Get the chopper timing for the specified axis and index
     switch (i) {
       default: // A specified axis isn't Trinamic
+<<<<<<< HEAD
         SERIAL_ECHOLNPGM("?Axis ", C(AXIS_CHAR(i)), " has no TMC drivers.");
+=======
+        SERIAL_ECHOLNPGM(GCODE_ERR_MSG("Axis ", C(AXIS_CHAR(i)), " has no TMC drivers."));
+>>>>>>> bugfix-2.1.x
         break;
 
       #if AXIS_IS_TMC(X) || AXIS_IS_TMC(X2)

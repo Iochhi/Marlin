@@ -35,22 +35,68 @@
 
 namespace ExtUI {
 
+<<<<<<< HEAD
   void onStartup() { nextion.Startup();  }
   void onIdle() { nextion.IdleLoop(); }
   void onPrinterKilled(FSTR_P const error, FSTR_P const component) { nextion.PrinterKilled(error, component); }
   void onMediaInserted() {}
   void onMediaError() {}
   void onMediaRemoved() {}
+=======
+  void onStartup() { nextion.startup();  }
+  void onIdle() { nextion.idleLoop(); }
+  void onPrinterKilled(FSTR_P const error, FSTR_P const component) { nextion.printerKilled(error, component); }
+
+  void onMediaMounted() {}
+  void onMediaError() {}
+  void onMediaRemoved() {}
+
+  void onHeatingError(const heater_id_t header_id) {}
+  void onMinTempError(const heater_id_t header_id) {}
+  void onMaxTempError(const heater_id_t header_id) {}
+
+>>>>>>> bugfix-2.1.x
   void onPlayTone(const uint16_t frequency, const uint16_t duration/*=0*/) {}
   void onPrintTimerStarted() {}
   void onPrintTimerPaused() {}
   void onPrintTimerStopped() {}
   void onFilamentRunout(const extruder_t) {}
+<<<<<<< HEAD
   void onUserConfirmRequired(const char * const msg) { nextion.ConfirmationRequest(msg); }
   void onStatusChanged(const char * const msg) { nextion.StatusChange(msg); }
 
   void onHomingStart() {}
   void onHomingDone() {}
+=======
+
+  void onUserConfirmRequired(const char * const msg) { nextion.confirmationRequest(msg); }
+
+  // For fancy LCDs include an icon ID, message, and translated button title
+  void onUserConfirmRequired(const int icon, const char * const cstr, FSTR_P const fBtn) {
+    onUserConfirmRequired(cstr);
+    UNUSED(icon); UNUSED(fBtn);
+  }
+  void onUserConfirmRequired(const int icon, FSTR_P const fstr, FSTR_P const fBtn) {
+    onUserConfirmRequired(fstr);
+    UNUSED(icon); UNUSED(fBtn);
+  }
+
+  #if ENABLED(ADVANCED_PAUSE_FEATURE)
+    void onPauseMode(
+      const PauseMessage message,
+      const PauseMode mode/*=PAUSE_MODE_SAME*/,
+      const uint8_t extruder/*=active_extruder*/
+    ) {
+      stdOnPauseMode(message, mode, extruder);
+    }
+  #endif
+
+  void onStatusChanged(const char * const msg) { nextion.statusChange(msg); }
+
+  void onHomingStart() {}
+  void onHomingDone() {}
+
+>>>>>>> bugfix-2.1.x
   void onPrintDone() { nextion.PrintFinished(); }
 
   void onFactoryReset() {}
@@ -92,6 +138,12 @@ namespace ExtUI {
   #if HAS_LEVELING
     void onLevelingStart() {}
     void onLevelingDone() {}
+<<<<<<< HEAD
+=======
+    #if ENABLED(PREHEAT_BEFORE_LEVELING)
+      celsius_t getLevelingBedTemp() { return LEVELING_BED_TEMP; }
+    #endif
+>>>>>>> bugfix-2.1.x
   #endif
 
   #if HAS_MESH
@@ -104,6 +156,13 @@ namespace ExtUI {
     }
   #endif
 
+<<<<<<< HEAD
+=======
+  #if ENABLED(PREVENT_COLD_EXTRUSION)
+    void onSetMinExtrusionTemp(const celsius_t) {}
+  #endif
+
+>>>>>>> bugfix-2.1.x
   #if ENABLED(POWER_LOSS_RECOVERY)
     void onSetPowerLoss(const bool onoff) {
       // Called when power-loss is enabled/disabled
@@ -117,6 +176,7 @@ namespace ExtUI {
   #endif
 
   #if HAS_PID_HEATING
+<<<<<<< HEAD
     void onPidTuning(const result_t rst) {
       // Called for temperature PID tuning result
       nextion.PanelInfo(37);
@@ -126,6 +186,31 @@ namespace ExtUI {
   void onSteppersDisabled() {}
   void onSteppersEnabled()  {}
 
+=======
+    void onPIDTuning(const pidresult_t rst) {
+      // Called for temperature PID tuning result
+      nextion.panelInfo(37);
+    }
+    void onStartM303(const int count, const heater_id_t hid, const celsius_t temp) {
+      // Called by M303 to update the UI
+    }
+  #endif
+
+  #if ENABLED(MPC_AUTOTUNE)
+    void onMPCTuning(const mpcresult_t rst) {
+      // Called for temperature PID tuning result
+    }
+  #endif
+
+  #if ENABLED(PLATFORM_M997_SUPPORT)
+    void onFirmwareFlash() {}
+  #endif
+
+  void onSteppersDisabled() {}
+  void onSteppersEnabled() {}
+  void onAxisDisabled(const axis_t) {}
+  void onAxisEnabled(const axis_t) {}
+>>>>>>> bugfix-2.1.x
 }
 
 #endif // NEXTION_TFT

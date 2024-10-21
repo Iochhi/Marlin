@@ -131,10 +131,14 @@ void GcodeSuite::M900() {
         SERIAL_ECHOLNPGM("Advance K=", planner.extruder_advance_K[0]);
       #else
         SERIAL_ECHOPGM("Advance K");
+<<<<<<< HEAD
         EXTRUDER_LOOP() {
           SERIAL_CHAR(' ', '0' + e, ':');
           SERIAL_DECIMAL(planner.extruder_advance_K[e]);
         }
+=======
+        EXTRUDER_LOOP() SERIAL_ECHO(C(' '), C('0' + e), C(':'), planner.extruder_advance_K[e]);
+>>>>>>> bugfix-2.1.x
         SERIAL_EOL();
       #endif
 
@@ -144,6 +148,11 @@ void GcodeSuite::M900() {
 }
 
 void GcodeSuite::M900_report(const bool forReplay/*=true*/) {
+<<<<<<< HEAD
+=======
+  TERN_(MARLIN_SMALL_BUILD, return);
+
+>>>>>>> bugfix-2.1.x
   report_heading(forReplay, F(STR_LINEAR_ADVANCE));
   #if DISTINCT_E < 2
     report_echo_start(forReplay);

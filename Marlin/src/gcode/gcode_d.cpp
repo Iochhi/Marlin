@@ -99,6 +99,10 @@ void GcodeSuite::D(const int16_t dcode) {
     } break;
 
     #if ENABLED(EEPROM_SETTINGS)
+<<<<<<< HEAD
+=======
+
+>>>>>>> bugfix-2.1.x
       case 3: { // D3 Read / Write EEPROM
         uint8_t *pointer = parser.hex_adr_val('A');
         uint16_t len = parser.ushortval('C', 1);
@@ -107,6 +111,7 @@ void GcodeSuite::D(const int16_t dcode) {
         NOMORE(len, persistentStore.capacity() - addr);
         if (parser.seenval('X')) {
           uint16_t val = parser.hex_val('X');
+<<<<<<< HEAD
           #if ENABLED(EEPROM_SETTINGS)
             persistentStore.access_start();
             while (len--) {
@@ -132,11 +137,30 @@ void GcodeSuite::D(const int16_t dcode) {
             SERIAL_ECHOLNPGM("NO EEPROM");
             len = 0;
           #endif
+=======
+          persistentStore.access_start();
+          while (len--) {
+            int pos = 0;
+            persistentStore.write_data(pos, (uint8_t *)&val, sizeof(val));
+          }
+          SERIAL_EOL();
+          persistentStore.access_finish();
+        }
+        else {
+          // Read bytes from EEPROM
+          persistentStore.access_start();
+          int pos = 0;
+          uint8_t val;
+          while (len--) if (!persistentStore.read_data(pos, &val, 1)) print_hex_byte(val);
+          SERIAL_EOL();
+          persistentStore.access_finish();
+>>>>>>> bugfix-2.1.x
           SERIAL_EOL();
         }
       } break;
     #endif
 
+<<<<<<< HEAD
     case 4: { // D4 Read / Write PIN
       //const bool is_out = parser.boolval('F');
       //const uint8_t pin = parser.byteval('P'),
@@ -171,11 +195,52 @@ void GcodeSuite::D(const int16_t dcode) {
         //while (len--) {
         //// TODO: Read bytes from FLASH
         //  print_hex_byte(flash_read_byte(adr++));
+=======
+    #endif // EEPROM_SETTINGS
+
+    case 4: { // D4 Read / Write PIN
+      //const bool is_out = parser.boolval('F');
+      //const uint8_t pin = parser.byteval('P'),
+      //              val = parser.byteval('V', LOW);
+      if (parser.seenval('X')) {
+        // TODO: Write the hex bytes after the X
+        //while (len--) {
+        //}
+      }
+      else {
+        //while (len--) {
+        //// TODO: Read bytes from EEPROM
+        //  print_hex_byte(eeprom_read_byte(adr++));
+>>>>>>> bugfix-2.1.x
         //}
         SERIAL_EOL();
       }
     } break;
 
+<<<<<<< HEAD
+=======
+    case 5: { // D5 Read / Write onboard Flash
+              // This will overwrite program and data, so don't use it.
+      #define ONBOARD_FLASH_SIZE 1024 // 0x400
+      uint8_t *pointer = parser.hex_adr_val('A');
+      uint16_t len = parser.ushortval('C', 1);
+      uintptr_t addr = (uintptr_t)pointer;
+      NOMORE(addr, size_t(ONBOARD_FLASH_SIZE - 1));
+      NOMORE(len, ONBOARD_FLASH_SIZE - addr);
+      if (parser.seenval('X')) {
+        // TODO: Write the hex bytes after the X
+        //while (len--) {}
+      }
+      else {
+        //while (len--) {
+        //// TODO: Read bytes from FLASH
+        //  print_hex_byte(flash_read_byte(adr++));
+        //}
+        SERIAL_EOL();
+      }
+    } break;
+
+>>>>>>> bugfix-2.1.x
     case 6: // D6 Check delay loop accuracy
       dump_delay_accuracy_check();
       break;

@@ -77,6 +77,7 @@ extern DefaultSerial1 USBSerial;
     #define MYSERIAL3 USBSerial
   #elif WITHIN(SERIAL_PORT_3, 0, 3)
     #define MYSERIAL3 MSERIAL(SERIAL_PORT_3)
+<<<<<<< HEAD
   #else
     #error "SERIAL_PORT_3 must be from 0 to 3. You can also use -1 if the board supports Native USB."
   #endif
@@ -87,8 +88,20 @@ extern DefaultSerial1 USBSerial;
     #define MMU2_SERIAL USBSerial
   #elif WITHIN(MMU2_SERIAL_PORT, 0, 3)
     #define MMU2_SERIAL MSERIAL(MMU2_SERIAL_PORT)
+=======
+>>>>>>> bugfix-2.1.x
   #else
-    #error "MMU2_SERIAL_PORT must be from 0 to 3. You can also use -1 if the board supports Native USB."
+    #error "SERIAL_PORT_3 must be from 0 to 3. You can also use -1 if the board supports Native USB."
+  #endif
+#endif
+
+#ifdef MMU_SERIAL_PORT
+  #if MMU_SERIAL_PORT == -1
+    #define MMU_SERIAL USBSerial
+  #elif WITHIN(MMU_SERIAL_PORT, 0, 3)
+    #define MMU_SERIAL MSERIAL(MMU_SERIAL_PORT)
+  #else
+    #error "MMU_SERIAL_PORT must be from 0 to 3. You can also use -1 if the board supports Native USB."
   #endif
 #endif
 
@@ -100,7 +113,11 @@ extern DefaultSerial1 USBSerial;
   #else
     #error "LCD_SERIAL_PORT must be from 0 to 3. You can also use -1 if the board supports Native USB."
   #endif
+<<<<<<< HEAD
   #if HAS_DGUS_LCD
+=======
+  #if ANY(HAS_DGUS_LCD, EXTENSIBLE_UI)
+>>>>>>> bugfix-2.1.x
     #define LCD_SERIAL_TX_BUFFER_FREE() LCD_SERIAL.available()
   #endif
 #endif
@@ -137,12 +154,12 @@ extern DefaultSerial1 USBSerial;
 //
 
 // Test whether the pin is valid
-constexpr bool VALID_PIN(const pin_t pin) {
+constexpr bool isValidPin(const pin_t pin) {
   return LPC176x::pin_is_valid(pin);
 }
 
 // Get the analog index for a digital pin
-constexpr int8_t DIGITAL_PIN_TO_ANALOG_PIN(const pin_t pin) {
+constexpr int8_t digitalPinToAnalogIndex(const pin_t pin) {
   return (LPC176x::pin_is_valid(pin) && LPC176x::pin_has_adc(pin)) ? pin : -1;
 }
 

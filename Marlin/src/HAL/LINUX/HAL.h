@@ -26,6 +26,14 @@
 #include <iostream>
 #include <stdint.h>
 #include <stdarg.h>
+<<<<<<< HEAD
+=======
+
+#ifdef HAS_LIBBSD
+  #include <bsd/string.h>
+#endif
+
+>>>>>>> bugfix-2.1.x
 #undef min
 #undef max
 #include <algorithm>
@@ -162,4 +170,16 @@ public:
   }
 
   static void set_pwm_frequency(const pin_t, int) {}
+<<<<<<< HEAD
+=======
+
+  #ifndef HAS_LIBBSD
+    /**
+     * Redirect missing strlcpy here
+     */
+    static size_t _strlcpy(char *dst, const char *src, size_t dsize);
+    #define strlcpy hal._strlcpy
+  #endif
+
+>>>>>>> bugfix-2.1.x
 };

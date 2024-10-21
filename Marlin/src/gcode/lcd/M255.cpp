@@ -21,7 +21,11 @@
  */
 #include "../../inc/MarlinConfig.h"
 
+<<<<<<< HEAD
 #if HAS_GCODE_M255
+=======
+#if ENABLED(EDITABLE_DISPLAY_TIMEOUT)
+>>>>>>> bugfix-2.1.x
 
 #include "../gcode.h"
 #include "../../lcd/marlinui.h"
@@ -44,6 +48,10 @@ void GcodeSuite::M255() {
 }
 
 void GcodeSuite::M255_report(const bool forReplay/*=true*/) {
+<<<<<<< HEAD
+=======
+  TERN_(MARLIN_SMALL_BUILD, return);
+>>>>>>> bugfix-2.1.x
   report_heading_etc(forReplay, F(STR_DISPLAY_SLEEP));
   SERIAL_ECHOLNPGM("  M255 S",
     TERN(HAS_DISPLAY_SLEEP, ui.sleep_timeout_minutes, ui.backlight_timeout_minutes),
@@ -51,4 +59,8 @@ void GcodeSuite::M255_report(const bool forReplay/*=true*/) {
   );
 }
 
+<<<<<<< HEAD
 #endif // HAS_GCODE_M255
+=======
+#endif // EDITABLE_DISPLAY_TIMEOUT
+>>>>>>> bugfix-2.1.x

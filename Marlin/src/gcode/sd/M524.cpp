@@ -27,8 +27,13 @@
 #include "../gcode.h"
 #include "../../sd/cardreader.h"
 
+<<<<<<< HEAD
 #if ENABLED(DWIN_LCD_PROUI)
   #include "../../lcd/marlinui.h"
+=======
+#if ENABLED(EXTENSIBLE_UI)
+  #include "../../lcd/extui/ui_api.h"
+>>>>>>> bugfix-2.1.x
 #endif
 
 /**
@@ -36,9 +41,15 @@
  */
 void GcodeSuite::M524() {
 
+<<<<<<< HEAD
   #if ENABLED(DWIN_LCD_PROUI)
 
     ui.abort_print();
+=======
+  #if ENABLED(EXTENSIBLE_UI)
+
+    ExtUI::stopPrint(); // Calls ui.abort_print() which does the same as below
+>>>>>>> bugfix-2.1.x
 
   #else
 

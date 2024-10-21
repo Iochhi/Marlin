@@ -21,8 +21,11 @@
  */
 #pragma once
 
+<<<<<<< HEAD
 #include "../../core/macros.h"
 
+=======
+>>>>>>> bugfix-2.1.x
 #if ALL(HAS_MARLINUI_U8GLIB, HAS_MEDIA) && (LCD_PINS_D4 == SD_SCK_PIN || LCD_PINS_EN == SD_MOSI_PIN || DOGLCD_SCK == SD_SCK_PIN || DOGLCD_MOSI == SD_MOSI_PIN)
   #define SOFTWARE_SPI  // If the SD card and LCD adapter share the same SPI pins, then software SPI is currently
                         // needed due to the speed and mode required for communicating with each device being different.

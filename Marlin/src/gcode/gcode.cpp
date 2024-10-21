@@ -80,6 +80,7 @@ millis_t GcodeSuite::previous_move_ms = 0,
 #endif
 
 // Relative motion mode for each logical axis
+<<<<<<< HEAD
 static constexpr xyze_bool_t ar_init = AXIS_RELATIVE_MODES;
 relative_t GcodeSuite::axis_relative = 0 LOGICAL_AXIS_GANG(
   | (ar_init.e << REL_E),
@@ -93,6 +94,9 @@ relative_t GcodeSuite::axis_relative = 0 LOGICAL_AXIS_GANG(
   | (ar_init.v << REL_V),
   | (ar_init.w << REL_W)
 );
+=======
+relative_t GcodeSuite::axis_relative; // Init in constructor
+>>>>>>> bugfix-2.1.x
 
 #if ANY(HAS_AUTO_REPORTING, HOST_KEEPALIVE_FEATURE)
   bool GcodeSuite::autoreport_paused; // = false
@@ -117,8 +121,12 @@ void GcodeSuite::report_heading(const bool forReplay, FSTR_P const fstr, const b
   if (forReplay) return;
   if (fstr) {
     SERIAL_ECHO_START();
+<<<<<<< HEAD
     SERIAL_ECHOPGM("; ");
     SERIAL_ECHOF(fstr);
+=======
+    SERIAL_ECHO(F("; "), fstr);
+>>>>>>> bugfix-2.1.x
   }
   if (eol) { SERIAL_CHAR(':'); SERIAL_EOL(); }
 }
@@ -135,6 +143,7 @@ void GcodeSuite::say_units() {
  * Return -1 if the T parameter is out of range
  */
 int8_t GcodeSuite::get_target_extruder_from_command() {
+<<<<<<< HEAD
   if (parser.seenval('T')) {
     const int8_t e = parser.value_byte();
     if (e < EXTRUDERS) return e;
@@ -143,6 +152,18 @@ int8_t GcodeSuite::get_target_extruder_from_command() {
     SERIAL_ECHOLNPGM(" " STR_INVALID_EXTRUDER " ", e);
     return -1;
   }
+=======
+  #if HAS_TOOLCHANGE
+    if (parser.seenval('T')) {
+      const int8_t e = parser.value_byte();
+      if (e < EXTRUDERS) return e;
+      SERIAL_ECHO_START();
+      SERIAL_CHAR('M'); SERIAL_ECHO(parser.codenum);
+      SERIAL_ECHOLNPGM(" " STR_INVALID_EXTRUDER " ", e);
+      return -1;
+    }
+  #endif
+>>>>>>> bugfix-2.1.x
   return active_extruder;
 }
 
@@ -211,9 +232,16 @@ void GcodeSuite::get_destination_from_command() {
   #endif
 
   if (parser.floatval('F') > 0) {
+<<<<<<< HEAD
     feedrate_mm_s = parser.value_feedrate();
     // Update the cutter feed rate for use by M4 I set inline moves.
     TERN_(LASER_FEATURE, cutter.feedrate_mm_m = MMS_TO_MMM(feedrate_mm_s));
+=======
+    const float fr_mm_min = parser.value_linear_units();
+    feedrate_mm_s = MMM_TO_MMS(fr_mm_min);
+    // Update the cutter feed rate for use by M4 I set inline moves.
+    TERN_(LASER_FEATURE, cutter.feedrate_mm_m = fr_mm_min);
+>>>>>>> bugfix-2.1.x
   }
 
   #if ALL(PRINTCOUNTER, HAS_EXTRUDERS)
@@ -300,22 +328,35 @@ void GcodeSuite::dwell(millis_t time) {
 
   void GcodeSuite::G29_with_retry() {
     uint8_t retries = G29_MAX_RETRIES;
-    while (G29()) { // G29 should return true for failed probes ONLY
-      if (retries) {
-        event_probe_recover();
-        --retries;
-      }
-      else {
-        event_probe_failure();
-        return;
-      }
+    bool fail = false;
+    for (;;) {
+      fail = G29(); // G29 should return true for failed probes ONLY
+      if (!fail || !retries) break;
+      event_probe_recover();
+      --retries;
     }
 
+<<<<<<< HEAD
     TERN_(HOST_PROMPT_SUPPORT, hostui.prompt_end());
 
     #ifdef G29_SUCCESS_COMMANDS
       process_subcommands_now(F(G29_SUCCESS_COMMANDS));
     #endif
+=======
+    if (fail) {
+      event_probe_failure();
+      TERN_(G29_HALT_ON_FAILURE, return);
+    }
+    else {
+      TERN_(HOST_PROMPT_SUPPORT, hostui.prompt_end());
+      #ifdef G29_SUCCESS_COMMANDS
+        process_subcommands_now(F(G29_SUCCESS_COMMANDS));
+      #endif
+    }
+
+    TERN_(HAS_DWIN_E3V2_BASIC, dwinLevelingDone());
+    TERN_(EXTENSIBLE_UI, ExtUI::onLevelingDone());
+>>>>>>> bugfix-2.1.x
   }
 
 #endif // G29_RETRY_AND_RECOVER
@@ -356,7 +397,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
       case 0: case 1:                                             // G0: Fast Move, G1: Linear Move
         G0_G1(TERN_(HAS_FAST_MOVES, parser.codenum == 0)); break;
 
-      #if ENABLED(ARC_SUPPORT) && DISABLED(SCARA)
+      #if ENABLED(ARC_SUPPORT)
         case 2: case 3: G2_G3(parser.codenum == 2); break;        // G2: CW ARC, G3: CCW ARC
       #endif
 
@@ -674,9 +715,25 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
 
       case 18: case 84: M18_M84(); break;                         // M18/M84: Disable Steppers / Set Timeout
       case 85: M85(); break;                                      // M85: Set inactivity stepper shutdown timeout
-      case 92: M92(); break;                                      // M92: Set the steps-per-unit for one or more axes
+
+      #if ENABLED(HOTEND_IDLE_TIMEOUT)
+        case 86: M86(); break;                                    // M86: Set Hotend Idle Timeout
+        case 87: M87(); break;                                    // M87: Cancel Hotend Idle Timeout
+      #endif
+
+      #if ENABLED(EDITABLE_STEPS_PER_UNIT)
+        case 92: M92(); break;                                    // M92: Set the steps-per-unit for one or more axes
+      #endif
+
       case 114: M114(); break;                                    // M114: Report current position
+<<<<<<< HEAD
       case 115: M115(); break;                                    // M115: Report capabilities
+=======
+
+      #if ENABLED(CAPABILITIES_REPORT)
+        case 115: M115(); break;                                  // M115: Report capabilities
+      #endif
+>>>>>>> bugfix-2.1.x
 
       case 117: TERN_(HAS_STATUS_MESSAGE, M117()); break;         // M117: Set LCD message text, if possible
 
@@ -722,7 +779,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
       case 204: M204(); break;                                    // M204: Set acceleration
       case 205: M205(); break;                                    // M205: Set advanced settings
 
-      #if HAS_M206_COMMAND
+      #if HAS_HOME_OFFSET
         case 206: M206(); break;                                  // M206: Set home offsets
       #endif
 
@@ -734,6 +791,10 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
             if (MIN_AUTORETRACT <= MAX_AUTORETRACT) M209();       // M209: Turn Automatic Retract Detection on/off
             break;
         #endif
+      #endif
+
+      #if ENABLED(EDITABLE_HOMING_FEEDRATE)
+        case 210: M210(); break;                                  // M210: Set the homing feedrate
       #endif
 
       #if HAS_SOFTWARE_ENDSTOPS
@@ -770,6 +831,10 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
 
       #if ENABLED(BABYSTEPPING)
         case 290: M290(); break;                                  // M290: Babystepping
+        #if ENABLED(EP_BABYSTEPPING)
+          case 293: IF_DISABLED(EMERGENCY_PARSER, M293()); break; // M293: Babystep up
+          case 294: IF_DISABLED(EMERGENCY_PARSER, M294()); break; // M294: Babystep down
+        #endif
       #endif
 
       #if HAS_SOUND
@@ -796,7 +861,11 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 250: M250(); break;                                  // M250: Set LCD contrast
       #endif
 
+<<<<<<< HEAD
       #if HAS_GCODE_M255
+=======
+      #if ENABLED(EDITABLE_DISPLAY_TIMEOUT)
+>>>>>>> bugfix-2.1.x
         case 255: M255(); break;                                  // M255: Set LCD Sleep/Backlight Timeout (Minutes)
       #endif
 
@@ -849,7 +918,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 402: M402(); break;                                  // M402: Stow probe
       #endif
 
-      #if HAS_PRUSA_MMU2
+      #if HAS_PRUSA_MMU2 || HAS_PRUSA_MMU3
         case 403: M403(); break;
       #endif
 
@@ -884,7 +953,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 425: M425(); break;                                  // M425: Tune backlash compensation
       #endif
 
-      #if HAS_M206_COMMAND
+      #if HAS_HOME_OFFSET
         case 428: M428(); break;                                  // M428: Apply current_position to home_offset
       #endif
 
@@ -892,8 +961,16 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 430: M430(); break;                                  // M430: Read the system current (A), voltage (V), and power (W)
       #endif
 
+      #if HAS_RS485_SERIAL
+        case 485: M485(); break;                                  // M485: Send RS485 packets
+      #endif
+
       #if ENABLED(CANCEL_OBJECTS)
         case 486: M486(); break;                                  // M486: Identify and cancel objects
+      #endif
+
+      #if ENABLED(FT_MOTION)
+        case 493: M493(); break;                                  // M493: Fixed-Time Motion control
       #endif
 
       case 500: M500(); break;                                    // M500: Store settings in EEPROM
@@ -934,13 +1011,24 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 575: M575(); break;                                  // M575: Set serial baudrate
       #endif
 
+<<<<<<< HEAD
       #if HAS_ZV_SHAPING
         case 593: M593(); break;                                  // M593: Set Input Shaping parameters
+=======
+      #if ENABLED(NONLINEAR_EXTRUSION)
+        case 592: M592(); break;                                  // M592: Nonlinear Extrusion control
+      #endif
+
+      #if HAS_ZV_SHAPING
+        case 593: M593(); break;                                  // M593: Input Shaping control
+>>>>>>> bugfix-2.1.x
       #endif
 
       #if ENABLED(ADVANCED_PAUSE_FEATURE)
         case 600: M600(); break;                                  // M600: Pause for Filament Change
-        case 603: M603(); break;                                  // M603: Configure Filament Change
+        #if ENABLED(CONFIGURE_FILAMENT_CHANGE)
+          case 603: M603(); break;                                  // M603: Configure Filament Change
+        #endif
       #endif
 
       #if HAS_DUPLICATION_MODE
@@ -962,6 +1050,15 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
       #if ENABLED(FILAMENT_LOAD_UNLOAD_GCODES)
         case 701: M701(); break;                                  // M701: Load Filament
         case 702: M702(); break;                                  // M702: Unload Filament
+      #endif
+
+      #if HAS_PRUSA_MMU3
+        case 704: M704(); break;                                  // M704: Preload to MMU
+        case 705: M705(); break;                                  // M705: Eject filament
+        case 706: M706(); break;                                  // M706: Cut filament
+        case 707: M707(); break;                                  // M707: Read from MMU register
+        case 708: M708(); break;                                  // M708: Write to MMU register
+        case 709: M709(); break;                                  // M709: MMU power & reset
       #endif
 
       #if ENABLED(CONTROLLER_FAN_EDITABLE)
@@ -1058,6 +1155,13 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 422: M422(); break;                                  // M422: Set Z Stepper automatic alignment position using probe
       #endif
 
+<<<<<<< HEAD
+=======
+      #if ENABLED(OTA_FIRMWARE_UPDATE)
+        case 936: M936(); break;                                  // M936: OTA update firmware.
+      #endif
+
+>>>>>>> bugfix-2.1.x
       #if SPI_FLASH_BACKUP
         case 993: M993(); break;                                  // M993: Backup SPI Flash to SD
         case 994: M994(); break;                                  // M994: Load a Backup from SD to SPI Flash
@@ -1082,10 +1186,17 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 1001: M1001(); break;                                // M1001: [INTERNAL] Handle SD completion
       #endif
 
-      #if ENABLED(DGUS_LCD_UI_MKS)
+      #if DGUS_LCD_UI_MKS
         case 1002: M1002(); break;                                // M1002: [INTERNAL] Tool-change and Relative E Move
       #endif
 
+<<<<<<< HEAD
+=======
+      #if ENABLED(ONE_CLICK_PRINT)
+        case 1003: M1003(); break;                                // M1003: [INTERNAL] Set the current dir to /
+      #endif
+
+>>>>>>> bugfix-2.1.x
       #if ENABLED(UBL_MESH_WIZARD)
         case 1004: M1004(); break;                                // M1004: UBL Mesh Wizard
       #endif
@@ -1168,10 +1279,14 @@ void GcodeSuite::process_subcommands_now(FSTR_P fgcode) {
   for (;;) {
     PGM_P const delim = strchr_P(pgcode, '\n');       // Get address of next newline
     const size_t len = delim ? delim - pgcode : strlen_P(pgcode); // Get the command length
+<<<<<<< HEAD
     char cmd[len + 1];                                // Allocate a stack buffer
     strncpy_P(cmd, pgcode, len);                      // Copy the command to the stack
     cmd[len] = '\0';                                  // End with a nul
     parser.parse(cmd);                                // Parse the command
+=======
+    parser.parse(MString<MAX_CMD_SIZE>().setn_P(pgcode, len));    // Parse the command
+>>>>>>> bugfix-2.1.x
     process_parsed_command(true);                     // Process it (no "ok")
     if (!delim) break;                                // Last command?
     pgcode = delim + 1;                               // Get the next command

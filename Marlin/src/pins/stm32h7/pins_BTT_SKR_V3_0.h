@@ -21,6 +21,18 @@
  */
 #pragma once
 
+<<<<<<<< HEAD:Marlin/src/pins/stm32h7/pins_BTT_SKR_SE_BX_V2.h
+#define BOARD_INFO_NAME      "BTT SKR SE BX V2.0"
+
+#define SAFE_POWER_PIN                      PI11
+
+#include "pins_BTT_SKR_SE_BX_common.h"
+========
+/**
+ * BigTreeTech SKR 3 (STM32H743VI / STM32H723VG)
+ */
+
 #define BOARD_INFO_NAME "BTT SKR V3"
 
 #include "pins_BTT_SKR_V3_0_common.h"
+>>>>>>>> bugfix-2.1.x:Marlin/src/pins/stm32h7/pins_BTT_SKR_V3_0.h

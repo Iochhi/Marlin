@@ -24,6 +24,7 @@
 namespace DGUSSetupHandler {
 
   #if HAS_MEDIA
+<<<<<<< HEAD
     bool Print();
   #endif
   bool PrintStatus();
@@ -38,5 +39,21 @@ namespace DGUSSetupHandler {
   bool Gcode();
   bool PID();
   bool Infos();
+=======
+    bool print();
+  #endif
+  bool printStatus();
+  bool printAdjust();
+  bool levelingMenu();
+  bool levelingOffset();
+  bool levelingManual();
+  bool levelingAutomatic();
+  bool levelingProbing();
+  bool filament();
+  bool move();
+  bool gcode();
+  bool pid();
+  bool infos();
+>>>>>>> bugfix-2.1.x
 
 }

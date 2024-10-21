@@ -11,7 +11,11 @@ if pioutil.is_pio_build():
 
     if current_OS == 'Windows':
 
+<<<<<<< HEAD
         Import("env")
+=======
+        env = pioutil.env
+>>>>>>> bugfix-2.1.x
 
         # Use bossac.exe on Windows
         env.Replace(

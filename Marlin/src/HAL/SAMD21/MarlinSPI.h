@@ -26,6 +26,17 @@
  */
 #pragma once
 
+<<<<<<<< HEAD:Marlin/src/HAL/SAMD21/MarlinSPI.h
 #include <SPI.h>
 
 using MarlinSPI = SPIClass;
+========
+#include "../DGUSScreenHandlerBase.h"
+
+typedef DGUSScreenHandler DGUSScreenHandlerClass;
+
+#if ENABLED(POWER_LOSS_RECOVERY)
+  #define PLR_SCREEN_RECOVER DGUS_SCREEN_SDPRINTMANIPULATION
+  #define PLR_SCREEN_CANCEL DGUS_SCREEN_STATUS
+#endif
+>>>>>>>> bugfix-2.1.x:Marlin/src/lcd/extui/dgus/hiprecy/DGUSScreenHandler.h

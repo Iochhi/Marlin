@@ -68,8 +68,12 @@ void GcodeSuite::M303() {
     default:
       SERIAL_ECHOPGM(STR_PID_AUTOTUNE);
       SERIAL_ECHOLNPGM(STR_PID_BAD_HEATER_ID);
+<<<<<<< HEAD
       TERN_(EXTENSIBLE_UI, ExtUI::onPidTuning(ExtUI::result_t::PID_BAD_EXTRUDER_NUM));
       TERN_(DWIN_LCD_PROUI, DWIN_PidTuning(PID_BAD_EXTRUDER_NUM));
+=======
+      TERN_(EXTENSIBLE_UI, ExtUI::onPIDTuning(ExtUI::pidresult_t::PID_BAD_HEATER_ID));
+>>>>>>> bugfix-2.1.x
       return;
   }
 
@@ -79,6 +83,7 @@ void GcodeSuite::M303() {
   const celsius_t temp = seenS ? parser.value_celsius() : default_temp;
   const bool u = parser.boolval('U');
 
+<<<<<<< HEAD
   #if ENABLED(DWIN_LCD_PROUI) && ANY(PIDTEMP, PIDTEMPBED)
     if (seenC) HMI_data.PidCycles = c;
     if (seenS) {
@@ -89,6 +94,9 @@ void GcodeSuite::M303() {
       }
     }
   #endif
+=======
+  TERN_(EXTENSIBLE_UI, ExtUI::onStartM303(c, hid, temp));
+>>>>>>> bugfix-2.1.x
 
   IF_DISABLED(BUSY_WHILE_HEATING, KEEPALIVE_STATE(NOT_BUSY));
 

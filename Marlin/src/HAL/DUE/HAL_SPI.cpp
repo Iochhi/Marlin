@@ -42,7 +42,11 @@
 // Public functions
 // ------------------------
 
+<<<<<<< HEAD
 #if ANY(DUE_SOFTWARE_SPI, FORCE_SOFT_SPI)
+=======
+#if ANY(SOFTWARE_SPI, FORCE_SOFT_SPI)
+>>>>>>> bugfix-2.1.x
 
   // ------------------------
   // Software SPI

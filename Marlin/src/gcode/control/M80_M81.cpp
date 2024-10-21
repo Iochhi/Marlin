@@ -34,6 +34,13 @@
   #include "../../feature/power.h"
 #endif
 
+<<<<<<< HEAD
+=======
+#if ENABLED(POWER_LOSS_RECOVERY)
+  #include "../../feature/powerloss.h"
+#endif
+
+>>>>>>> bugfix-2.1.x
 #if HAS_SUICIDE
   #include "../../MarlinCore.h"
 #endif
@@ -48,7 +55,11 @@
 
     // S: Report the current power supply state and exit
     if (parser.seen('S')) {
+<<<<<<< HEAD
       SERIAL_ECHOF(powerManager.psu_on ? F("PS:1\n") : F("PS:0\n"));
+=======
+      SERIAL_ECHO(powerManager.psu_on ? F("PS:1\n") : F("PS:0\n"));
+>>>>>>> bugfix-2.1.x
       return;
     }
 
@@ -83,6 +94,8 @@ void GcodeSuite::M81() {
     thermalManager.fans_paused = false;
     ZERO(thermalManager.saved_fan_speed);
   #endif
+
+  TERN_(POWER_LOSS_RECOVERY, recovery.purge()); // Clear PLR on intentional shutdown
 
   safe_delay(1000); // Wait 1 second before switching off
 

@@ -78,6 +78,8 @@ public:
     inline void clear() { length = index_r = index_w = 0; }
 
     void advance_pos(uint8_t &p, const int inc) { if (++p >= BUFSIZE) p = 0; length += inc; }
+    inline void advance_w() { advance_pos(index_w, 1); }
+    inline void advance_r() { if (length) advance_pos(index_r, -1); }
 
     void commit_command(const bool skip_ok
       OPTARG(HAS_MULTI_SERIAL, serial_index_t serial_ind=serial_index_t())
@@ -134,7 +136,11 @@ public:
    * Aborts the current SRAM queue so only use for one or two commands.
    */
   static void inject(const char * const gcode) {
+<<<<<<< HEAD
     strncpy(injected_commands, gcode, sizeof(injected_commands) - 1);
+=======
+    strlcpy(injected_commands, gcode, sizeof(injected_commands));
+>>>>>>> bugfix-2.1.x
   }
 
   /**
@@ -212,6 +218,14 @@ public:
    */
   static void set_current_line_number(long n) { serial_state[ring_buffer.command_port().index].last_N = n; }
 
+<<<<<<< HEAD
+=======
+  /**
+   * Get the current line number for the last received command
+   */
+  static long get_current_line_number() { return serial_state[ring_buffer.command_port().index].last_N; }
+
+>>>>>>> bugfix-2.1.x
   #if ENABLED(BUFFER_MONITORING)
 
     private:

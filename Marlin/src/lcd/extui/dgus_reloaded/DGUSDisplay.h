@@ -26,7 +26,11 @@
  * Updated for STM32G0B1RE by Protomosh in 2022.
  */
 
+<<<<<<< HEAD
 #include "config/DGUS_Screen.h"
+=======
+#include "config/DGUS_ScreenID.h"
+>>>>>>> bugfix-2.1.x
 #include "config/DGUS_Control.h"
 #include "definition/DGUS_VP.h"
 
@@ -58,6 +62,7 @@ public:
 
   DGUSDisplay() = default;
 
+<<<<<<< HEAD
   static void Init();
 
   static void Read(uint16_t addr, uint8_t size);
@@ -79,10 +84,37 @@ public:
 
   // Force display into another screen.
   static void SwitchScreen(DGUS_Screen screen);
+=======
+  static void init();
+
+  static void read(uint16_t addr, uint8_t size);
+  static void write(uint16_t addr, const void* data_ptr, uint8_t size);
+
+  static void writeString(uint16_t addr, const void* data_ptr, uint8_t size, bool left=true, bool right=false, bool use_space=true);
+  static void writeStringPGM(uint16_t addr, const void* data_ptr, uint8_t size, bool left=true, bool right=false, bool use_space=true);
+  static void writeString(uint16_t addr, FSTR_P const fstr, uint8_t size, bool left=true, bool right=false, bool use_space=true) {
+    writeStringPGM(addr, FTOP(fstr), size, left, right, use_space);
+  }
+
+  template<typename T>
+  static void write(uint16_t addr, T data) {
+    write(addr, static_cast<const void*>(&data), sizeof(T));
+  }
+
+  // Until now I did not need to actively read from the display. That's why there is no readVariable
+  // (I extensively use the auto upload of the display)
+
+  // Read GUI and OS version from screen
+  static void readVersions();
+
+  // Force display into another screen.
+  static void switchScreen(const DGUS_ScreenID screenID);
+>>>>>>> bugfix-2.1.x
   // Play sounds using the display speaker.
   //   start: position at which the sound was stored on the display.
   //   len: how many sounds to play. Sounds will play consecutively from start to start+len-1.
   //   volume: playback volume. 0 keeps the current volume.
+<<<<<<< HEAD
   static void PlaySound(uint8_t start, uint8_t len = 1, uint8_t volume = 0);
   // Enable/disable a specific touch control.
   //   type: control type.
@@ -107,6 +139,32 @@ public:
   // Checks two things: Can we confirm the presence of the display and has we initialized it.
   // (both boils down that the display answered to our chatting)
   static bool IsInitialized() {
+=======
+  static void playSound(uint8_t start, uint8_t len=1, uint8_t volume=0);
+  // Enable/disable a specific touch control.
+  //   type: control type.
+  //   control: index of the control on the page (set during screen development).
+  static void enableControl(const DGUS_ScreenID screenID, DGUS_ControlType type, DGUS_Control control);
+  static void disableControl(const DGUS_ScreenID screenID, DGUS_ControlType type, DGUS_Control control);
+
+  static uint8_t getBrightness();
+  static uint8_t getVolume();
+
+  // Set the display brightness/volume, ranging 0 - 100
+  static void setBrightness(uint8_t brightness);
+  static void setVolume(uint8_t volume);
+
+  // Periodic tasks, eg. Rx-Queue handling.
+  static void loop();
+
+  // Helper for users of this class to estimate if an interaction would be blocking.
+  static size_t getFreeTxBuffer();
+  static void flushTx();
+
+  // Checks two things: Can we confirm the presence of the display and has we initialized it.
+  // (both boils down that the display answered to our chatting)
+  static bool isInitialized() {
+>>>>>>> bugfix-2.1.x
     return initialized;
   }
 
@@ -114,7 +172,11 @@ public:
   static uint8_t os_version;
 
   template<typename T>
+<<<<<<< HEAD
   static T SwapBytes(const T value) {
+=======
+  static T swapBytes(const T value) {
+>>>>>>> bugfix-2.1.x
     union {
       T val;
       char byte[sizeof(T)];
@@ -126,12 +188,20 @@ public:
   }
 
   template<typename T_in, typename T_out, uint8_t decimals>
+<<<<<<< HEAD
   T_out FromFixedPoint(const T_in value) {
+=======
+  T_out fromFixedPoint(const T_in value) {
+>>>>>>> bugfix-2.1.x
     return (T_out)((float)value / POW(10, decimals));
   }
 
   template<typename T_in, typename T_out, uint8_t decimals>
+<<<<<<< HEAD
   T_out ToFixedPoint(const T_in value) {
+=======
+  T_out toFixedPoint(const T_in value) {
+>>>>>>> bugfix-2.1.x
     return (T_out)LROUND((float)value * POW(10, decimals));
   }
 
@@ -157,8 +227,13 @@ private:
     DGUS_VERSION = 0x000F // OS/GUI version
   };
 
+<<<<<<< HEAD
   static void WriteHeader(uint16_t addr, uint8_t command, uint8_t len);
   static void ProcessRx();
+=======
+  static void writeHeader(uint16_t addr, uint8_t command, uint8_t len);
+  static void processRx();
+>>>>>>> bugfix-2.1.x
 
   static uint8_t volume;
   static uint8_t brightness;
@@ -169,6 +244,7 @@ private:
   static bool initialized;
 };
 
+<<<<<<< HEAD
 template<> inline uint16_t DGUSDisplay::SwapBytes(const uint16_t value) {
   return ((value << 8) | (value >> 8));
 }
@@ -177,3 +253,13 @@ extern DGUSDisplay dgus_display;
 
 /// Helper to populate a DGUS_VP for a given VP. Return false if not found.
 extern bool DGUS_PopulateVP(const DGUS_Addr addr, DGUS_VP * const buffer);
+=======
+template<> inline uint16_t DGUSDisplay::swapBytes(const uint16_t value) {
+  return ((value << 8) | (value >> 8));
+}
+
+extern DGUSDisplay dgus;
+
+// Helper to populate a DGUS_VP for a given VP. Return false if not found.
+extern bool populateVP(const DGUS_Addr addr, DGUS_VP * const buffer);
+>>>>>>> bugfix-2.1.x

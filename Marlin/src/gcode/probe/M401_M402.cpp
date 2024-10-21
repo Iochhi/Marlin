@@ -28,7 +28,11 @@
 #include "../../module/motion.h"
 #include "../../module/probe.h"
 
+<<<<<<< HEAD
 #ifdef BLTOUCH_HS_MODE
+=======
+#if HAS_BLTOUCH_HS_MODE
+>>>>>>> bugfix-2.1.x
   #include "../../feature/bltouch.h"
 #endif
 
@@ -38,16 +42,28 @@
  * With BLTOUCH_HS_MODE:
  *  H       Report the current BLTouch HS mode state and exit
  *  S<bool> Set High Speed (HS) Mode and exit without deploy
+<<<<<<< HEAD
  */
 void GcodeSuite::M401() {
   const bool seenH = parser.seen_test('H'),
              seenS = parser.seen('S');
   if (seenH || seenS) {
     #ifdef BLTOUCH_HS_MODE
+=======
+ *
+ *  R<bool> Remain in place after deploying (and before activating) the probe
+ */
+void GcodeSuite::M401() {
+  #if HAS_BLTOUCH_HS_MODE
+    const bool seenH = parser.seen_test('H'),
+               seenS = parser.seen('S');
+    if (seenH || seenS) {
+>>>>>>> bugfix-2.1.x
       if (seenS) bltouch.high_speed_mode = parser.value_bool();
       SERIAL_ECHO_START();
       SERIAL_ECHOPGM("BLTouch HS mode ");
       serialprintln_onoff(bltouch.high_speed_mode);
+<<<<<<< HEAD
     #endif
   }
   else {
@@ -55,13 +71,27 @@ void GcodeSuite::M401() {
     TERN_(PROBE_TARE, probe.tare());
     report_current_position();
   }
+=======
+      return;
+    }
+  #endif
+
+  probe.deploy(parser.boolval('R'));
+  TERN_(PROBE_TARE, probe.tare());
+  report_current_position();
+>>>>>>> bugfix-2.1.x
 }
 
 /**
  * M402: Deactivate and stow the Z probe
+ *  R<bool> Remain in place after stowing (and before deactivating) the probe
  */
 void GcodeSuite::M402() {
+<<<<<<< HEAD
   probe.stow();
+=======
+  probe.stow(parser.boolval('R'));
+>>>>>>> bugfix-2.1.x
   #ifdef Z_AFTER_PROBING
     do_z_clearance(Z_AFTER_PROBING);
   #endif

@@ -87,11 +87,19 @@ extern MSerialT serial_stream_3;
   #endif
 #endif
 
+<<<<<<< HEAD
 #ifdef MMU2_SERIAL_PORT
   #if WITHIN(MMU2_SERIAL_PORT, 0, 3)
     #define MMU2_SERIAL MSERIAL(MMU2_SERIAL_PORT)
   #else
     #error "MMU2_SERIAL_PORT must be from 0 to 3. Please update your configuration."
+=======
+#ifdef MMU_SERIAL_PORT
+  #if WITHIN(MMU_SERIAL_PORT, 0, 3)
+    #define MMU_SERIAL MSERIAL(MMU_SERIAL_PORT)
+  #else
+    #error "MMU_SERIAL_PORT must be from 0 to 3. Please update your configuration."
+>>>>>>> bugfix-2.1.x
   #endif
 #endif
 
@@ -263,4 +271,17 @@ public:
     analogWrite(pin, v);
   }
 
+<<<<<<< HEAD
+=======
+  static void set_pwm_frequency(const pin_t, int) {}
+
+  #ifndef HAS_LIBBSD
+    /**
+     * Redirect missing strlcpy here
+     */
+    static size_t _strlcpy(char *dst, const char *src, size_t dsize);
+    #define strlcpy hal._strlcpy
+  #endif
+
+>>>>>>> bugfix-2.1.x
 };

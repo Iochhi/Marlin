@@ -20,3 +20,10 @@
  *
  */
 #pragma once
+<<<<<<< HEAD
+=======
+
+#if ANY(MKS_MINI_12864, FYSETC_MINI_12864_2_1)
+  #define U8G_HW_SPI_ESP32 1
+#endif
+>>>>>>> bugfix-2.1.x

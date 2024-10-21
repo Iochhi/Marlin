@@ -129,11 +129,17 @@ typedef Servo hal_servo_t;
   #endif
 #endif
 
+<<<<<<< HEAD
 #ifdef MMU2_SERIAL_PORT
   #if !WITHIN(MMU2_SERIAL_PORT, 0, 3)
     #error "MMU2_SERIAL_PORT must be from 0 to 3"
+=======
+#ifdef MMU_SERIAL_PORT
+  #if !WITHIN(MMU_SERIAL_PORT, 0, 3)
+    #error "MMU_SERIAL_PORT must be from 0 to 3"
+>>>>>>> bugfix-2.1.x
   #endif
-  #define MMU2_SERIAL mmuSerial
+  #define MMU_SERIAL mmuSerial
 #endif
 
 #ifdef LCD_SERIAL_PORT
@@ -141,7 +147,11 @@ typedef Servo hal_servo_t;
     #error "LCD_SERIAL_PORT must be from 0 to 3."
   #endif
   #define LCD_SERIAL lcdSerial
+<<<<<<< HEAD
   #if HAS_DGUS_LCD
+=======
+  #if ANY(HAS_DGUS_LCD, EXTENSIBLE_UI)
+>>>>>>> bugfix-2.1.x
     #define LCD_SERIAL_TX_BUFFER_FREE() LCD_SERIAL.get_tx_buffer_free()
   #endif
 #endif
@@ -189,7 +199,11 @@ class MarlinHAL {
 public:
 
   // Earliest possible init, before setup()
+<<<<<<< HEAD
   MarlinHAL() {}
+=======
+  MarlinHAL();
+>>>>>>> bugfix-2.1.x
 
   // Watchdog
   static void watchdog_init()    IF_DISABLED(USE_WATCHDOG, {});

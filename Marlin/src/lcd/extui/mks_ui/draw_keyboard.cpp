@@ -155,7 +155,11 @@ static void lv_kb_event_cb(lv_obj_t *kb, lv_event_t event) {
         #endif // MKS_WIFI_MODULE
         case autoLevelGcodeCommand:
           uint8_t buf[100];
+<<<<<<< HEAD
           strncpy((char *)buf, ret_ta_txt, sizeof(buf) - 1);
+=======
+          strlcpy((char *)buf, ret_ta_txt, sizeof(buf));
+>>>>>>> bugfix-2.1.x
           update_gcode_command(AUTO_LEVELING_COMMAND_ADDR, buf);
           goto_previous_ui();
           break;

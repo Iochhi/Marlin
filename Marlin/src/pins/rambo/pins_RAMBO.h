@@ -39,8 +39,7 @@
 
 /**
  * Rambo pin assignments
- * Schematic (1.1b): https://green-candy.osdn.jp/external/MarlinFW/board_schematics/RAMBo/Rambo1-1-schematic.png
- * Origin (1.1b): https://www.reprap.org/wiki/File:Rambo1-1-schematic.png
+ * Schematic (1.1b): https://www.reprap.org/wiki/File:Rambo1-1-schematic.png
  */
 
 #include "env_validate.h"
@@ -213,7 +212,7 @@
     #define LCD_PINS_D6                       74
     #define LCD_PINS_D7                       75
 
-    #if EITHER(VIKI2, miniVIKI)
+    #if ANY(VIKI2, miniVIKI)
       #define BEEPER_PIN                      44
       // NB: Panucatt's Viki 2.0 wiring diagram (v1.2) indicates that the
       //     beeper/buzzer is connected to pin 33; however, the pin used in the

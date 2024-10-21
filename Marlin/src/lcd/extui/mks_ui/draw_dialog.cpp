@@ -102,12 +102,17 @@ static void btn_ok_event_cb(lv_obj_t *btn, lv_event_t event) {
         card.openFileRead(cur_name);
         if (card.isFileOpen()) {
           feedrate_percentage = 100;
+<<<<<<< HEAD
           planner.flow_percentage[0] = 100;
           planner.e_factor[0] = planner.flow_percentage[0] * 0.01f;
           #if HAS_MULTI_EXTRUDER
             planner.flow_percentage[1] = 100;
             planner.e_factor[1] = planner.flow_percentage[1] * 0.01f;
           #endif
+=======
+          TERN_(HAS_EXTRUDERS, planner.set_flow(0, 100));
+          TERN_(HAS_MULTI_EXTRUDER, planner.set_flow(1, 100));
+>>>>>>> bugfix-2.1.x
           card.startOrResumeFilePrinting();
           TERN_(POWER_LOSS_RECOVERY, recovery.prepare());
           once_flag = false;
@@ -392,6 +397,7 @@ void lv_draw_dialog(uint8_t type) {
         lv_obj_align(labelDialog, nullptr, LV_ALIGN_CENTER, 0, -20);
       }
       else if (upload_result == 3) {
+<<<<<<< HEAD
         char buf[200];
         int _index = 0;
 
@@ -414,6 +420,14 @@ void lv_draw_dialog(uint8_t type) {
         buf[_index++] = ':';
         sprintf_P(&buf[_index], PSTR(" %d KBytes/s\n"), (int)(upload_size / upload_time_sec / 1024));
 
+=======
+        MString<200> buf(
+          F(DIALOG_UPLOAD_FINISH_EN), '\n',
+          F(DIALOG_UPLOAD_SIZE_EN), F(": "), int(upload_size / 1024), F(" KBytes\n"),
+          F(DIALOG_UPLOAD_TIME_EN), F(": "), int(upload_time_sec), F(" s\n"),
+          F(DIALOG_UPLOAD_SPEED_EN), F(": "), int(upload_size / upload_time_sec / 1024), F(" KBytes/s\n")
+        );
+>>>>>>> bugfix-2.1.x
         lv_label_set_text(labelDialog, buf);
         lv_obj_align(labelDialog, nullptr, LV_ALIGN_CENTER, 0, -20);
       }
@@ -493,7 +507,11 @@ void filament_dialog_handle() {
     planner.synchronize();
     uiCfg.filament_loading_time_flg = true;
     uiCfg.filament_loading_time_cnt = 0;
-    sprintf_P(public_buf_m, PSTR("T%d\nG91\nG1 E%d F%d\nG90"), uiCfg.extruderIndex, gCfgItems.filamentchange_load_length, gCfgItems.filamentchange_load_speed);
+    #if HAS_TOOLCHANGE
+      sprintf_P(public_buf_m, PSTR("T%d\nG91\nG1 E%d F%d\nG90"), uiCfg.extruderIndex, gCfgItems.filamentchange_load_length, gCfgItems.filamentchange_load_speed);
+    #else
+      sprintf_P(public_buf_m, PSTR("G91\nG1 E%d F%d\nG90"), gCfgItems.filamentchange_load_length, gCfgItems.filamentchange_load_speed);
+    #endif
     queue.inject(public_buf_m);
   }
   if (uiCfg.filament_heat_completed_unload) {
@@ -503,7 +521,11 @@ void filament_dialog_handle() {
     planner.synchronize();
     uiCfg.filament_unloading_time_flg = true;
     uiCfg.filament_unloading_time_cnt = 0;
-    sprintf_P(public_buf_m, PSTR("T%d\nG91\nG1 E-%d F%d\nG90"), uiCfg.extruderIndex, gCfgItems.filamentchange_unload_length, gCfgItems.filamentchange_unload_speed);
+    #if HAS_TOOLCHANGE
+      sprintf_P(public_buf_m, PSTR("T%d\nG91\nG1 E-%d F%d\nG90"), uiCfg.extruderIndex, gCfgItems.filamentchange_unload_length, gCfgItems.filamentchange_unload_speed);
+    #else
+      sprintf_P(public_buf_m, PSTR("G91\nG1 E-%d F%d\nG90"), gCfgItems.filamentchange_unload_length, gCfgItems.filamentchange_unload_speed);
+    #endif
     queue.inject(public_buf_m);
   }
 

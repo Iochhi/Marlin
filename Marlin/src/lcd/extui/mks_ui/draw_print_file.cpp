@@ -474,7 +474,7 @@ void cutFileName(char *path, int len, int bytePerLine, char *outStr) {
         wcscpy(outStr, beginIndex);
     #else
       if ((int)strlen(beginIndex) > len)
-        strncpy(outStr, beginIndex, len);
+        strlcpy(outStr, beginIndex, len + 1);
       else
         strcpy(outStr, beginIndex);
     #endif
@@ -485,7 +485,11 @@ void cutFileName(char *path, int len, int bytePerLine, char *outStr) {
         wcsncpy(outStr, (const WCHAR *)beginIndex, len - 3);
         wcscat(outStr, (const WCHAR *)gFileTail);
       #else
+<<<<<<< HEAD
         strncpy(outStr, beginIndex, len - 4);
+=======
+        strlcpy(outStr, beginIndex, len - 3);
+>>>>>>> bugfix-2.1.x
         strcat_P(outStr, PSTR("~.g"));
       #endif
     }
@@ -495,7 +499,11 @@ void cutFileName(char *path, int len, int bytePerLine, char *outStr) {
         wcsncpy(outStr, (const WCHAR *)beginIndex, strsize);
         wcscat(outStr, (const WCHAR *)&gFileTail[3]);
       #else
+<<<<<<< HEAD
         strncpy(outStr, beginIndex, strsize);
+=======
+        strlcpy(outStr, beginIndex, strsize + 1);
+>>>>>>> bugfix-2.1.x
         strcat_P(outStr, PSTR("g"));
       #endif
     }

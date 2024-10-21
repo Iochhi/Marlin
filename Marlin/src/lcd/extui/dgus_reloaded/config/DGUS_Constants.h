@@ -73,6 +73,7 @@
   #define DGUS_DEFAULT_FILAMENT_LEN 10
 #endif
 
+<<<<<<< HEAD
 #ifndef BED_TRAMMING_Z_HOP
   #define BED_TRAMMING_Z_HOP 4.0
 #endif
@@ -83,6 +84,8 @@
 
 static_assert(BED_TRAMMING_Z_HOP >= 0, "BED_TRAMMING_Z_HOP must be >= 0. Please update your configuration.");
 
+=======
+>>>>>>> bugfix-2.1.x
 #ifndef DGUS_LEVEL_CENTER_X
   #define DGUS_LEVEL_CENTER_X ((X_BED_SIZE) / 2)
 #endif

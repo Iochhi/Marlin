@@ -22,13 +22,19 @@
 
 /**
  * Lock screen implementation for PRO UI
+<<<<<<< HEAD
  * Author: Miguel A. Risco-Castillo (MRISCOC)
+=======
+ * Based on the original work of: Miguel Risco-Castillo (MRISCOC)
+ * https://github.com/mriscoc/Ender3V2S1
+>>>>>>> bugfix-2.1.x
  * Version: 2.3.2
  * Date: 2022/11/20
  */
 
 #include "../../../inc/MarlinConfigPre.h"
 
+<<<<<<< HEAD
 #if ALL(DWIN_LCD_PROUI, HAS_LOCKSCREEN)
 
 #include "dwin_defines.h"
@@ -43,11 +49,30 @@ bool LockScreenClass::unlocked = false;
 uint8_t LockScreenClass::rprocess = 0;
 
 void LockScreenClass::init() {
+=======
+#if ENABLED(DWIN_LCD_PROUI)
+
+#include "dwin_defines.h"
+
+#if HAS_LOCKSCREEN
+
+#include "dwin.h"
+#include "lockscreen.h"
+
+LockScreen lockScreen;
+
+uint8_t LockScreen::lock_pos = 0;
+bool LockScreen::unlocked = false;
+uint8_t LockScreen::rprocess = 0;
+
+void LockScreen::init() {
+>>>>>>> bugfix-2.1.x
   lock_pos = 0;
   unlocked = false;
   draw();
 }
 
+<<<<<<< HEAD
 void LockScreenClass::draw() {
   Title.SetCaption(GET_TEXT_F(MSG_LOCKSCREEN));
   DWINUI::ClearMainArea();
@@ -61,15 +86,40 @@ void LockScreenClass::draw() {
 }
 
 void LockScreenClass::onEncoder(EncoderState encoder_diffState) {
+=======
+void LockScreen::draw() {
+  title.setCaption(GET_TEXT_F(MSG_LOCKSCREEN));
+  DWINUI::clearMainArea();
+  DWINUI::drawIcon(ICON_LOGO, 71, 120);  // CREALITY logo
+  DWINUI::drawCenteredString(COLOR_WHITE, 180, GET_TEXT_F(MSG_LOCKSCREEN_LOCKED));
+  DWINUI::drawCenteredString(COLOR_WHITE, 200, GET_TEXT_F(MSG_LOCKSCREEN_UNLOCK));
+  DWINUI::drawCenteredString(COLOR_WHITE, 240, F("-> | <-"));
+  dwinDrawBox(1, hmiData.colorBarfill, 0, 260, DWIN_WIDTH, 20);
+  dwinDrawVLine(COLOR_YELLOW, lock_pos * DWIN_WIDTH / 255, 260, 20);
+  dwinUpdateLCD();
+}
+
+void LockScreen::onEncoder(EncoderState encoder_diffState) {
+>>>>>>> bugfix-2.1.x
   switch (encoder_diffState) {
     case ENCODER_DIFF_CW:    lock_pos += 8; break;
     case ENCODER_DIFF_CCW:   lock_pos -= 8; break;
     case ENCODER_DIFF_ENTER: unlocked = (lock_pos == 128); break;
     default: break;
   }
+<<<<<<< HEAD
   DWIN_Draw_Box(1, HMI_data.Barfill_Color, 0, 260, DWIN_WIDTH, 20);
   DWIN_Draw_VLine(Color_Yellow, lock_pos * DWIN_WIDTH / 255, 260, 20);
   DWIN_UpdateLCD();
 }
 
 #endif // DWIN_LCD_PROUI && HAS_LOCKSCREEN
+=======
+  dwinDrawBox(1, hmiData.colorBarfill, 0, 260, DWIN_WIDTH, 20);
+  dwinDrawVLine(COLOR_YELLOW, lock_pos * DWIN_WIDTH / 255, 260, 20);
+  dwinUpdateLCD();
+}
+
+#endif // HAS_LOCKSCREEN
+#endif // DWIN_LCD_PROUI
+>>>>>>> bugfix-2.1.x

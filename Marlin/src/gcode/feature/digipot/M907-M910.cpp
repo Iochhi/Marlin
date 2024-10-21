@@ -68,7 +68,11 @@ void GcodeSuite::M907() {
       #define HAS_X_Y_XY_I_J_K_U_V_W 1
     #endif
 
+<<<<<<< HEAD
     #if HAS_X_Y_XY_I_J_K_U_V_W || ANY_PIN(MOTOR_CURRENT_PWM_E, MOTOR_CURRENT_PWM_Z)
+=======
+    #if HAS_X_Y_XY_I_J_K_U_V_W || HAS_MOTOR_CURRENT_PWM_E || PIN_EXISTS(MOTOR_CURRENT_PWM_Z)
+>>>>>>> bugfix-2.1.x
 
       if (!parser.seen("S"
         #if HAS_X_Y_XY_I_J_K_U_V_W
@@ -77,7 +81,11 @@ void GcodeSuite::M907() {
         #if PIN_EXISTS(MOTOR_CURRENT_PWM_Z)
           "Z"
         #endif
+<<<<<<< HEAD
         #if PIN_EXISTS(MOTOR_CURRENT_PWM_E)
+=======
+        #if HAS_MOTOR_CURRENT_PWM_E
+>>>>>>> bugfix-2.1.x
           "E"
         #endif
       )) return M907_report();
@@ -94,7 +102,11 @@ void GcodeSuite::M907() {
       #if PIN_EXISTS(MOTOR_CURRENT_PWM_Z)
         if (parser.seenval('Z')) stepper.set_digipot_current(1, parser.value_int());
       #endif
+<<<<<<< HEAD
       #if PIN_EXISTS(MOTOR_CURRENT_PWM_E)
+=======
+      #if HAS_MOTOR_CURRENT_PWM_E
+>>>>>>> bugfix-2.1.x
         if (parser.seenval('E')) stepper.set_digipot_current(2, parser.value_int());
       #endif
 
@@ -126,12 +138,23 @@ void GcodeSuite::M907() {
 #if HAS_MOTOR_CURRENT_SPI || HAS_MOTOR_CURRENT_PWM
 
   void GcodeSuite::M907_report(const bool forReplay/*=true*/) {
+<<<<<<< HEAD
+=======
+    TERN_(MARLIN_SMALL_BUILD, return);
+
+>>>>>>> bugfix-2.1.x
     report_heading_etc(forReplay, F(STR_STEPPER_MOTOR_CURRENTS));
     #if HAS_MOTOR_CURRENT_PWM
       SERIAL_ECHOLNPGM_P(                                     // PWM-based has 3 values:
           PSTR("  M907 X"), stepper.motor_current_setting[0]  // X, Y, (I, J, K, U, V, W)
         , SP_Z_STR,         stepper.motor_current_setting[1]  // Z
+<<<<<<< HEAD
         , SP_E_STR,         stepper.motor_current_setting[2]  // E
+=======
+        #if HAS_MOTOR_CURRENT_PWM_E
+          , SP_E_STR,       stepper.motor_current_setting[2]  // E
+        #endif
+>>>>>>> bugfix-2.1.x
       );
     #elif HAS_MOTOR_CURRENT_SPI
       SERIAL_ECHOPGM("  M907");                               // SPI-based has 5 values:

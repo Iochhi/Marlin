@@ -1,6 +1,10 @@
 /**
  * Marlin 3D Printer Firmware
+<<<<<<< HEAD
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+=======
+ * Copyright (c) 2022 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+>>>>>>> bugfix-2.1.x
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -19,13 +23,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+<<<<<<< HEAD
 #pragma once
 
+=======
+
+/**
+ * SAMD21 HAL developed by Bart Meijer (brupje)
+ * Based on SAMD51 HAL by Giuliano Zaro (AKA GMagician)
+ */
+#pragma once
+
+<<<<<<<< HEAD:Marlin/src/HAL/SAMD21/MarlinSPI.h
+#include <SPI.h>
+
+using MarlinSPI = SPIClass;
+========
+>>>>>>> bugfix-2.1.x
 #include "../DGUSScreenHandlerBase.h"
 
 typedef DGUSScreenHandler DGUSScreenHandlerClass;
 
 #if ENABLED(POWER_LOSS_RECOVERY)
+<<<<<<< HEAD
   #define PLR_SCREEN_RECOVER DGUSLCD_SCREEN_SDPRINTMANIPULATION
   #define PLR_SCREEN_CANCEL DGUSLCD_SCREEN_STATUS
 #endif
+=======
+  #define PLR_SCREEN_RECOVER DGUS_SCREEN_SDPRINTMANIPULATION
+  #define PLR_SCREEN_CANCEL DGUS_SCREEN_STATUS
+#endif
+>>>>>>>> bugfix-2.1.x:Marlin/src/lcd/extui/dgus/hiprecy/DGUSScreenHandler.h
+>>>>>>> bugfix-2.1.x
